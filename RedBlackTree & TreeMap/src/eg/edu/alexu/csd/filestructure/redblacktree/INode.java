@@ -6,7 +6,7 @@ public interface INode<T extends Comparable<T>, V> {
     /**
      * set the parent of the current node in the tree
      * @param parent
-     */
+     */ 
     void setParent(INode<T, V> parent);
 	/**
 	* Returns the parent of the current node in the tree
