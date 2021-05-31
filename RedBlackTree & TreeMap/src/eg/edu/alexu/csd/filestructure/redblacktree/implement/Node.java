@@ -3,14 +3,16 @@ package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 
 public class Node<T extends Comparable<T>, V> implements INode<T, V> {
-
+	
 	private T key;
 	private V value;
 	private boolean isRed;
 	private INode<T, V> parent;
 	private INode<T, V> leftChild;
 	private INode<T, V> rightChild;
-
+	
+	public Node() {}
+	
 	public Node(T key, V vale, INode<T, V> parent) {
 		this.key = key;
 		this.value = vale;
@@ -75,12 +77,20 @@ public class Node<T extends Comparable<T>, V> implements INode<T, V> {
 
 	@Override
 	public void setColor(boolean color) {
-		this.isRed = true;
+		this.isRed = color;
 	}
 
 	@Override
 	public boolean isNull() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		String color = (this.isRed) ? "red" : "black";
+		return "[" + key + ", " + value + ", " + color + "]";
+	}
+	
+	
 
 }
