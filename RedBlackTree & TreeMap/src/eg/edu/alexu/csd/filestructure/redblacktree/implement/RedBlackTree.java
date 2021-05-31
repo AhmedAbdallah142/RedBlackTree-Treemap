@@ -168,7 +168,7 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 				x.setParent(y);
 			} else { // in case of there is multiple node in the right subtree
 				/*
-				 * first fix the pointers between nill>>x<< node and the parent of y becouse we
+				 * first fix the pointers between nill>>x<< node and the parent of y because we
 				 * move y to take the place of z. x always is nill node.
 				 */
 				rbTransplant(y, y.getRightChild());
@@ -198,7 +198,7 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 			if (x == x.getParent().getLeftChild()) { // case that x is left child.
 				s = x.getParent().getRightChild(); // s is the sibling of x.
 				if (s.getColor()) { // if s is red then case 3 occur.
-					s.setColor(false); // recolor s & x.
+					s.setColor(false); // re color s & x.
 					x.getParent().setColor(true);
 					left_rotate(x.getParent()); // left rotate.
 					s = x.getParent().getRightChild(); // change pointer of s after the rotate.
@@ -211,11 +211,11 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 					 * if the 2 child of s is black we in case 2 S is black and both its children
 					 * are black
 					 */
-					s.setColor(true); // recolor s
+					s.setColor(true); // re color s
 					x = x.getParent();
 				} else {
 					/*
-					 * if at least 1 is balck if the right child of s is the black node then enter
+					 * if at least 1 is black if the right child of s is the black node then enter
 					 * if condition
 					 */
 					if (!s.getRightChild().getColor()) {
@@ -340,7 +340,7 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 		System.out.println(t.search(10));
 	}
 
-	//DFS left
+	// DFS left
 	private void printTree(INode<T, V> root) {
 		if (root == nill)
 			return;
