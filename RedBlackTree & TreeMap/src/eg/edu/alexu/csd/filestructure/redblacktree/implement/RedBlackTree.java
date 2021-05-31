@@ -33,12 +33,27 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public V search(T key) {
+		
 		return null;
 	}
-
+	
+	/*@SuppressWarnings("rawtypes")
+	private boolean ifNodeExists( INode node, T key){	
+	    if (node == null)
+	        return false; 
+	    if (key.compareTo((T) node.getKey())==0)
+	        return true;
+	    boolean res1 = ifNodeExists(node.getLeftChild(), key);
+	    if(res1) return true;
+	    boolean res2 = ifNodeExists(node.getRightChild(), key);
+	 
+	    return res2;
+	}*/
+	
 	@Override
 	public boolean contains(T key) {
-		return false;
+		
+		return false /*ifNodeExists(root,key)*/;
 	}
 
 	@Override
@@ -354,6 +369,7 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 		System.out.println("\n delete");
 		t.delete(8);
 		printLevelOrder(t.getRoot());
+		System.out.println(t.contains(8));
 	}
 	@SuppressWarnings("rawtypes")
 	static void printLevelOrder(INode root)
