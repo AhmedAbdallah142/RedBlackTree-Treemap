@@ -21,37 +21,34 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		treeSize = 0;
 	}
 	ArrayList<Node> treeNodes = new ArrayList<Node>();
-	int upper_bound(int arr[], int N, int X)
+	@SuppressWarnings("unchecked")
+	int lower_bound(Comparable key)
 	{
 	    int mid;
 	    int low = 0;
-	    int high = N;
+	    int high = treeNodes.size();
 	    while (low < high) {
 	        mid = low + (high - low) / 2;
 	 
-	        if (X >= arr[mid]) {
-	        	low = mid;
+	        if (key.compareTo(treeNodes.get(mid).getKey()) <= 0) {
+	        	high = mid;
 	        }else {
-	        	 high = mid;
+	        	 low = mid+1;
 	        }
 	    }
 	   
-	    // if X is greater than arr[n-1]
-	    if(low < N && arr[low] <= X) {
+	    if(low < treeNodes.size() && (treeNodes.get(low).getKey().compareTo(key) < 0)) {
 	       low++;
 	    }
-	       
-	    // Return the lower_bound index
+
 	    return low;
 	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public Entry ceilingEntry(Comparable key) {
-		if (tree.getRoot() == null)
+		if (tree.isEmpty())
             return null;
- 
- 
-        Stack<Node> s = new Stack<Node>();
+       /* Stack<Node> s = new Stack<Node>();
         INode curr =  tree.getRoot();
  
         // traverse the tree
@@ -65,13 +62,26 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
  
             curr = s.pop();
  
-            if (key.compareTo(curr.getKey()) >= 0) {
+            if (curr.getKey().compareTo(key) >= 0) {
             	return (Entry) curr;
             }
 
             curr = curr.getRightChild();
         }
-		return null;
+		return null;*/
+		 
+		if (key.compareTo(treeNodes.get(treeSize-1).getKey()) > 0) {
+        	return null;
+        }else {
+        	int temp = lower_bound(key);
+        	if (key.compareTo(treeNodes.get(temp).getKey()) == 0) {
+        		return (Entry) treeNodes.get(temp);
+        	}else if (temp == treeSize) {
+        		return null;
+        	}else {
+        		return (Entry) treeNodes.get(temp+1);
+        	}
+        }
 	}
 
 	@SuppressWarnings("unchecked")
@@ -134,20 +144,29 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Set entrySet() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Node> set  = new HashSet<Node>();
+		set.addAll(treeNodes);
+		return set;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Entry firstEntry() {
-		// TODO Auto-generated method stub
+		if(tree.isEmpty()) {
 		return null;
+		}else {
+			return (Entry) treeNodes.get(0);
+		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T firstKey() {
-		// TODO Auto-generated method stub
-		return null;
+		if(tree.isEmpty()) {
+			return null;
+		}else {
+			return  (T) treeNodes.get(0).getKey();
+		}
 	}
 
 	@Override
