@@ -2,7 +2,7 @@ package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 
-public class Node<T extends Comparable<T>, V> implements INode<T, V>,Comparable<T> {
+public class Node<T extends Comparable<T>, V> implements INode<T, V> {
 	
 	private T key;
 	private V value;
@@ -89,11 +89,6 @@ public class Node<T extends Comparable<T>, V> implements INode<T, V>,Comparable<
 	public String toString() {
 		String color = (this.isRed) ? "red" : "black";
 		return "[" + key + ", " + value + ", " + color + "]";
-	}
-
-	@Override
-	public int compareTo(T o) {
-		return this.key.compareTo(o);
 	}
 	
 	
