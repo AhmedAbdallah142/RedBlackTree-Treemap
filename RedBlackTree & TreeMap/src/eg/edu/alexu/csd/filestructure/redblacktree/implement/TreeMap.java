@@ -2,6 +2,7 @@ package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -99,6 +100,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
 		return temp.getKey();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object get(Comparable key) {
 		return tree.search((T) key);
@@ -134,22 +136,41 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Set keySet() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<T> set = new HashSet<T>();
+		keySetHelper((Node) tree.getRoot(), set);
+		return set;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void keySetHelper(Node root, Set<T> set) {
+		if (root == null)
+			return;
+		set.add((T) root.getKey());
+		keySetHelper((Node) root.getLeftChild(),set);
+		keySetHelper((Node) root.getRightChild(),set);
+	}
+
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Entry lastEntry() {
-		// TODO Auto-generated method stub
+		Node temp = (Node) tree.getRoot();
+		while (temp!=null) {
+			if (temp.getRightChild()==null)
+				return (Entry) temp;
+		}
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Comparable lastKey() {
-		// TODO Auto-generated method stub
-		return null;
+		Node temp = (Node) lastEntry();
+		if (temp == null)
+			return null;
+		return temp.getKey();
 	}
 
 	@Override
