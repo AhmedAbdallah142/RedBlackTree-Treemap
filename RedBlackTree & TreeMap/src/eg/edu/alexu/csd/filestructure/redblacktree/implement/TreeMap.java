@@ -104,12 +104,15 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
 		return tree.search((T) key);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ArrayList headMap(Comparable toKey) {
-
-		return null;
+		ArrayList<Node> Nodes = new ArrayList<>();
+		headMapHelper(toKey, false, (Node) tree.getRoot(), Nodes);
+		return Nodes;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ArrayList headMap(Comparable toKey, boolean inclusive) {
 		ArrayList<Node> Nodes = new ArrayList<>();
