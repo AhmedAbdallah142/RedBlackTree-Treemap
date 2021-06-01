@@ -3,7 +3,6 @@ package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 import java.util.*;
 import java.util.Map.Entry;
 
-import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
@@ -43,16 +42,16 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	public Entry ceilingEntry(T key) {
 		if (tree.isEmpty())
             return null;
-       /* Stack<Node> s = new Stack<Node>();
-        INode curr =  tree.getRoot();
+        Stack<Node<T,V>> s = new Stack<Node<T,V>>();
+        Node<T,V> curr = (Node<T,V>) tree.getRoot();
  
         // traverse the tree
         while (curr != null || s.size() > 0)
         {
             while (curr !=  null)
             {
-                s.push((Node) curr);
-                curr =  curr.getLeftChild();
+                s.push((Node<T,V>) curr);
+                curr = (Node<T,V>) curr.getLeftChild();
             }
  
             curr = s.pop();
@@ -60,11 +59,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
             if (curr.getKey().compareTo(key) >= 0) {
             	return (Entry) curr;
             }
-            curr = curr.getRightChild();
+            curr = (Node<T,V>)curr.getRightChild();
         }
-		return null;*/
+		return null;
 		 
-		if (key.compareTo(treeNodes.get(treeSize-1).getKey()) > 0) {
+		/*if (key.compareTo(treeNodes.get(treeSize-1).getKey()) > 0) {
         	return null;
         }else {
         	int temp = lower_bound(key);
@@ -75,7 +74,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
         	}else {
         		return (Entry) treeNodes.get(temp+1);
         	}
-        }
+        }*/
 	}
 
 	@SuppressWarnings("unchecked")
@@ -140,6 +139,26 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	@Override
 	public Set entrySet() {
 		Set<Node<T,V>> set  = new HashSet<Node<T,V>>();
+		if (tree.isEmpty())
+            return null;
+        Stack<Node<T,V>> s = new Stack<Node<T,V>>();
+        Node<T,V> curr = (Node<T,V>) tree.getRoot();
+ 
+        // traverse the tree
+        while (curr != null || s.size() > 0)
+        {
+            while (curr !=  null)
+            {
+                s.push((Node<T,V>) curr);
+                curr = (Node<T,V>) curr.getLeftChild();
+            }
+ 
+            curr = s.pop();
+            set.add(curr);
+            
+            curr = (Node<T,V>)curr.getRightChild();
+        }
+	
 		set.addAll(treeNodes);
 		return set;
 	}
