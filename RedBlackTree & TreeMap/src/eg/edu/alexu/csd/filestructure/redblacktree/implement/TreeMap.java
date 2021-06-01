@@ -295,8 +295,15 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public void putAll(Map map) {
-		// TODO Auto-generated method stub
-
+		inOrder((Node) tree.getRoot(), map);
+	}
+	public void inOrder(Node node , Map map){
+		if (node == null){
+			return;
+		}
+		inOrder((Node) node.getLeftChild(), map);
+		map.put(node.getKey() , node.getValue());
+		inOrder((Node) node.getRightChild(),map);
 	}
 
 	@Override
