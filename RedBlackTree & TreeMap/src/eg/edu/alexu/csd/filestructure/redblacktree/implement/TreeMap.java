@@ -304,7 +304,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public boolean remove(T key) {
-		treeSize--;
+		if (treeSize != 0) {
+			treeSize--;
+		}
 		return tree.delete(key);
 	}
 
@@ -327,4 +329,36 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		coll((Node) node.getRightChild(),arrayList);
 		return arrayList;
 	}
+	
+	
+	public static void main(String [] args) {
+		TreeMap<Integer,String> tree = new TreeMap<Integer,String>();
+		tree.put(1,"Mark");
+		tree.put(2, "Faxawy");
+		tree.put(3,"Mark");
+		tree.put(4, "Faxawy");
+		tree.put(5,"Mark");
+		tree.put(6, "Faxawy");
+		tree.put(7,"Mark");
+		tree.put(8, "Faxawy");
+		
+		
+		
+		TreeMap<Integer, String> tree1 = new TreeMap<>();
+		tree1.put(1,"Mark");
+		tree1.put(2, "Faxawy");
+		tree1.put(3,"Mark");
+		tree1.put(4, "Faxawy");
+		tree1.put(5,"Mark");
+		tree1.put(6, "Faxawy");
+		tree1.put(7,"Mark");
+		tree1.put(8, "Faxawy");
+		
+		System.out.println(tree1);
+		
+		
+		
+	}
+	
+	
 }
