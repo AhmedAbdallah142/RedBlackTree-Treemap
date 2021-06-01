@@ -74,14 +74,15 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Comparable ceilingKey(Comparable key) {
+	public T ceilingKey(Comparable key) {
 	    Node curr = (Node) ceilingEntry(key);
 	    if (curr == null) { 
 	    	return null;
 	    }else {
 	    	//Comparable k = curr.getKey();
-	    	return (Comparable) curr.getKey();
+	    	return (T) curr.getKey();
 	    }
 	}
 
