@@ -39,7 +39,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public Entry ceilingEntry(T key) {
+	public Entry<T,V> ceilingEntry(T key) {
 		if (tree.isEmpty())
             return null;
         Stack<Node<T,V>> s = new Stack<Node<T,V>>();
@@ -57,7 +57,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
             curr = s.pop();
  
             if (curr.getKey() != null && curr.getKey().compareTo(key) >= 0) {
-            	return (Entry) curr;
+            	return (Entry<T,V>) curr;
             }
             curr = (Node<T,V>)curr.getRightChild();
         }
@@ -95,17 +95,17 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree = new RedBlackTree<T, V>();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean containsKey(T key) {
-		Node<T,V> curr = (Node<T,V>) ceilingEntry(key);
+		/*Node<T,V> curr = (Node<T,V>) ceilingEntry(key);
 	    if (curr == null) { 
 	    	return false;
 	    }else if (key.compareTo(curr.getKey()) == 0) {
 	    	return true;
 	    }else {
 	    	return false;
-		}
+		}*/
+	    return tree.contains(key);
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
  
             curr = s.pop();
  
-            if (curr.getValue().equals(value)) {
+            if (curr.getKey() != null && curr.getValue().equals(value)) {
             	return true;
             }
 
@@ -160,7 +160,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
             curr = (Node<T,V>)curr.getRightChild();
         }
 	
-		set.addAll(treeNodes);
+		//set.addAll(treeNodes);
 		return set;
 	}
 
@@ -381,9 +381,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(7,"Mark");
 		tree1.put(8, "Faxawy");
 		//System.out.println(tree1);
-		System.out.println(tree1.ceilingEntry(7));
-		System.out.println(tree.ceilingEntry(7));
-		
+		System.out.println(tree1.entrySet());
+		System.out.println(tree.entrySet());
 	}
 	
 	
