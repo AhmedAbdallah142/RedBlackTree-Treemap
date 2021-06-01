@@ -15,7 +15,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		treeSize = 0;
 	}
 	ArrayList<Node<T,V>> treeNodes = new ArrayList<Node<T,V>>();
-	@SuppressWarnings("unchecked")
 	int lower_bound(T key)
 	{
 	    int mid;
@@ -37,7 +36,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	    return low;
 	}
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public Entry<T,V> ceilingEntry(T key) {
 		if (tree.isEmpty())
@@ -46,9 +45,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
         Node<T,V> curr = (Node<T,V>) tree.getRoot();
  
         // traverse the tree
-        while (curr != null || s.size() > 0)
+        while (!curr.isNull() || s.size() > 0)
         {
-            while (curr !=  null)
+            while (!curr.isNull())
             {
                 s.push((Node<T,V>) curr);
                 curr = (Node<T,V>) curr.getLeftChild();
@@ -56,7 +55,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
  
             curr = s.pop();
  
-            if (curr.getKey() != null && curr.getKey().compareTo(key) >= 0) {
+            if (curr.getKey().compareTo(key) >= 0) {
             	return (Entry<T,V>) curr;
             }
             curr = (Node<T,V>)curr.getRightChild();
@@ -81,7 +80,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	@Override
 	public T ceilingKey(T key) {
 	    Node<T,V> curr = (Node<T,V>) ceilingEntry(key);
-	    if (curr == null) { 
+	    if (curr.isNull()) { 
 	    	return null;
 	    }else {
 	    	//Comparable k = curr.getKey();
@@ -110,16 +109,16 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public boolean containsValue(Object value) {
-		if (tree.getRoot() == null)
+		if (tree.getRoot().isNull())
             return false;
  
         Stack<Node<T,V>> s = new Stack<Node<T,V>>();
         Node<T,V> curr =  (Node<T, V>) tree.getRoot();
  
         // traverse the tree
-        while (curr != null || s.size() > 0)
+        while (!curr.isNull() || s.size() > 0)
         {
-            while (curr !=  null)
+            while (!curr.isNull())
             {
                 s.push((Node<T,V>) curr);
                 curr =  (Node<T, V>) curr.getLeftChild();
@@ -127,7 +126,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
  
             curr = s.pop();
  
-            if (curr.getKey() != null && curr.getValue().equals(value)) {
+            if (curr.getValue().equals(value)) {
             	return true;
             }
 
@@ -146,16 +145,16 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
         Node<T,V> curr = (Node<T,V>) tree.getRoot();
  
         // traverse the tree
-        while (curr != null || s.size() > 0)
+        while (!curr.isNull()|| s.size() > 0)
         {
-            while (curr !=  null)
+            while (!curr.isNull())
             {
                 s.push((Node<T,V>) curr);
                 curr = (Node<T,V>) curr.getLeftChild();
             }
  
             curr = s.pop();
-            if(curr.getKey() != null) {
+            if(!curr.isNull()) {
             set.add(curr);}
             
             curr = (Node<T,V>)curr.getRightChild();
@@ -171,7 +170,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return null;
 		}else {
 			Node<T, V> root = (Node<T, V>) tree.getRoot();
-			while(root.getKey() != null) {
+			while(!root.isNull()) {
 				root = (Node<T, V>)root.getLeftChild();
 			}
 			return (Entry) root;
@@ -193,16 +192,16 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	public Entry<T, V> floorEntry(T key) {
 		Node<T, V> temp = (Node<T, V>) tree.getRoot();
 		Node<T, V> Parent = null;
-		while (temp != null) {
+		while (!temp.isNull()) {
 			if (temp.getKey().compareTo(key) > 0) {
-				if ((temp.getLeftChild() == null) && (Parent != null)) {
+				if (!Parent.isNull()) {
 					return (Entry<T, V>) Parent;
 				}
 				temp = (Node<T, V>) temp.getLeftChild();
 			} else if (temp.getKey().compareTo(key) == 0) {
 				return (Entry<T, V>) temp;
 			} else {
-				if (temp.getRightChild() == null) {
+				if (temp.getRightChild().isNull()) {
 					return (Entry<T, V>) temp;
 				}
 				Parent = temp;
@@ -215,7 +214,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	@Override
 	public T floorKey(T key) {
 		Node<T, V> temp = (Node<T, V>) floorEntry(key);
-		if (temp == null)
+		if (temp.isNull())
 			return null;
 		return (T) temp.getKey();
 	}
@@ -241,7 +240,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	private void headMapHelper(T toKey, boolean inclusive, Node<T, V> temp, ArrayList<Node<T, V>> nodes) {
-		if (temp == null)
+		if (temp.isNull())
 			return;
 		headMapHelper(toKey, inclusive, (Node<T, V>) temp.getLeftChild(), nodes);
 		if (temp.getKey().compareTo(toKey) < 0) {
@@ -261,7 +260,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	private void keySetHelper(Node<T, V> root, Set<T> set) {
-		if (root == null)
+		if (root.isNull())
 			return;
 		set.add((T) root.getKey());
 		keySetHelper((Node<T, V>) root.getLeftChild(),set);
@@ -271,9 +270,10 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	@Override
 	public Entry<T, V> lastEntry() {
 		Node<T, V> temp = (Node<T, V>) tree.getRoot();
-		while (temp!=null) {
-			if (temp.getRightChild()==null)
+		while (!temp.isNull()) {
+			if (temp.getRightChild().isNull())
 				return (Entry<T, V>) temp;
+			temp = (Node<T, V>) temp.getRightChild();
 		}
 		return null;
 	}
@@ -281,7 +281,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	@Override
 	public T lastKey() {
 		Node<T, V> temp = (Node<T, V>) lastEntry();
-		if (temp == null)
+		if (temp.isNull())
 			return null;
 		return (T) temp.getKey();
 	}
@@ -318,7 +318,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		inOrder((Node) tree.getRoot(), map);
 	}
 	public void inOrder(Node node , Map map){
-		if (node == null){
+		if (node.isNull()){
 			return;
 		}
 		inOrder((Node) node.getLeftChild(), map);
@@ -345,7 +345,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return coll((Node) tree.getRoot(),arrayList);
 	}
 	public ArrayList coll(Node node,ArrayList<V> arrayList){
-		if (node == null){
+		if (node.isNull()){
 			return arrayList;
 		}
 		coll((Node) node.getLeftChild(), arrayList);
@@ -372,7 +372,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		//tree.ceilingEntry(7);
 		
 		java.util.TreeMap<Integer, String> tree1 = new java.util.TreeMap<Integer, String>();
-		tree1.put(1,"Mark");
+		/*tree1.put(1,"Mark");
 		tree1.put(2, "Faxawy");
 		tree1.put(3,"Mark");
 		tree1.put(4, "Faxawy");
@@ -380,9 +380,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(6, "Faxawy");
 		tree1.put(7,"Mark");
 		tree1.put(8, "Faxawy");
-		//System.out.println(tree1);
-		System.out.println(tree1.floorEntry(9));
-		System.out.println(tree.floorEntry(9));
+		//System.out.println(tree1);*/
+		tree.putAll(tree1);
+		//System.out.println(tree.ceilingEntry(6));
+		System.out.println(tree1.lastEntry());
+		//System.out.println(tree.pollFirstEntry());
 	}
 	
 	
