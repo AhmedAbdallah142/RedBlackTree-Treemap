@@ -343,7 +343,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		
 		
 		
-		TreeMap<Integer, String> tree1 = new TreeMap<>();
+		TreeMap<Integer, String> tree1 = new TreeMap<Integer, String>();
 		tree1.put(1,"Mark");
 		tree1.put(2, "Faxawy");
 		tree1.put(3,"Mark");
@@ -352,7 +352,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(6, "Faxawy");
 		tree1.put(7,"Mark");
 		tree1.put(8, "Faxawy");
-		
 		System.out.println(tree1);
 		
 		
