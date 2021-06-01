@@ -124,30 +124,55 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
+	void addSetInOrder(Node<T,V> node,ArrayList<Node<T, V>> list)
+	{
+	if (node == null)
+	return;
+	/* first recur on left child */
+	addSetInOrder((Node<T, V>) node.getLeftChild(),list);
+	if(node.getKey() != null) {
+	list.add(node);
+	}
+	addSetInOrder((Node<T, V>) node.getRightChild(),list);
+	}
+
+	 @SuppressWarnings("unchecked")
 	@Override
 	public Set entrySet() {
-		Set<Node<T, V>> set = new HashSet<Node<T, V>>();
-		if (tree.isEmpty())
-			return null;
-		Stack<Node<T, V>> s = new Stack<Node<T, V>>();
-		Node<T, V> curr = (Node<T, V>) tree.getRoot();
+	Set<Node<T,V>> set = new TreeSet<Node<T,V>>();
+	if (tree.isEmpty())
+	return null;
+	//Stack<Node<T,V>> s = new Stack<Node<T,V>>();
+	Node<T,V> curr = (Node<T,V>) tree.getRoot();
+	/*
+	// traverse the tree
+	while (curr != null || s.size() > 0)
+	{
+	while (curr != null)
+	{
+	s.push((Node<T,V>) curr);
+	curr = (Node<T,V>) curr.getLeftChild();
+	}
+	curr = s.pop();
+	//if(curr.getKey() != null) {
+	set.add(curr);//}
+	curr = (Node<T,V>)curr.getRightChild();
+	}*/
+	ArrayList<Node<T, V>> list = new ArrayList<Node<T,V>>();
+	addSetInOrder(curr, list);
+	Comparator<Node<T,V>> NodeComparator = new Comparator<Node<T,V>>() {
 
-		// traverse the tree
-		while (!curr.isNull() || s.size() > 0) {
-			while (!curr.isNull()) {
-				s.push((Node<T, V>) curr);
-				curr = (Node<T, V>) curr.getLeftChild();
-			}
-
-			curr = s.pop();
-			if (!curr.isNull()) {
-				set.add(curr);
-			}
-
-			curr = (Node<T, V>) curr.getRightChild();
-		}
-
-		return set;
+	 public int compare(Node<T,V> s1, Node<T,V> s2) {
+	return s1.getKey().compareTo(s2.getKey());
+	}};
+	Collections.sort(list, NodeComparator);
+	System.out.println(list);
+	//set.addAll(list);
+	for(int i = 0 ; i < list.size() ; i++) {
+	set.add(list.get(i));
+	}
+	return set;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -240,7 +265,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Set<T> keySet() {
-		Set<T> set = new HashSet<T>();
+		Set<T> set = new TreeSet<T>();
 		keySetHelper((Node<T, V>) tree.getRoot(), set);
 		return set;
 	}
@@ -352,11 +377,12 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree.put(1, "Mark1");
 		tree.put(2, "Faxawy2");
 		tree.put(3, "Mark3");
-		tree.put(4, "Faxawy4");
+		
 		tree.put(5, "Mark5");
 		tree.put(6, "Faxawy6");
 		tree.put(7, "Mark7");
 		tree.put(8, "Faxawy8");
+		tree.put(4, "Faxawy4");
 		// tree.ceilingEntry(7);
 
 		java.util.TreeMap<Integer, String> tree1 = new java.util.TreeMap<Integer, String>();
@@ -366,7 +392,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		 * tree1.put(7,"Mark"); tree1.put(8, "Faxawy"); //System.out.println(tree1);
 		 */
 		tree.putAll(tree1);
-		System.out.println(tree.ceilingEntry(6));
+		System.out.println(tree.keySet());
+		System.out.println(tree.entrySet());
 		System.out.println(tree1.lastEntry());
 		// System.out.println(tree.pollFirstEntry());
 	}
