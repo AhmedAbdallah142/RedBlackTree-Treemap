@@ -155,12 +155,12 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
             }
  
             curr = s.pop();
-            set.add(curr);
+            if(curr.getKey() != null) {
+            set.add(curr);}
             
             curr = (Node<T,V>)curr.getRightChild();
         }
 	
-		//set.addAll(treeNodes);
 		return set;
 	}
 
@@ -171,7 +171,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return null;
 		}else {
 			Node<T, V> root = (Node<T, V>) tree.getRoot();
-			while(!root.isNull()) {
+			while(root.getKey() != null) {
 				root = (Node<T, V>)root.getLeftChild();
 			}
 			return (Entry) root;
