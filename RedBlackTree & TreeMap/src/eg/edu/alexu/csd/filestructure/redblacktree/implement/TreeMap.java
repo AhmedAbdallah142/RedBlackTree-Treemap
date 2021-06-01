@@ -308,6 +308,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public boolean remove(T key) {
+		treeSize-;
 		return tree.delete(key);
 	}
 
