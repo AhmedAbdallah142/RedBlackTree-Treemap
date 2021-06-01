@@ -6,9 +6,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Stack;
 
+import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
-
+@SuppressWarnings("rawtypes")
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	RedBlackTree<T, V> tree;
@@ -18,34 +20,115 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree = new RedBlackTree<>();
 		treeSize = 0;
 	}
-
+	ArrayList<Node> treeNodes = new ArrayList<Node>();
+	int upper_bound(int arr[], int N, int X)
+	{
+	    int mid;
+	    int low = 0;
+	    int high = N;
+	    while (low < high) {
+	        mid = low + (high - low) / 2;
+	 
+	        if (X >= arr[mid]) {
+	        	low = mid;
+	        }else {
+	        	 high = mid;
+	        }
+	    }
+	   
+	    // if X is greater than arr[n-1]
+	    if(low < N && arr[low] <= X) {
+	       low++;
+	    }
+	       
+	    // Return the lower_bound index
+	    return low;
+	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public Entry ceilingEntry(Comparable key) {
-		// TODO Auto-generated method stub
+		if (tree.getRoot() == null)
+            return null;
+ 
+ 
+        Stack<Node> s = new Stack<Node>();
+        INode curr =  tree.getRoot();
+ 
+        // traverse the tree
+        while (curr != null || s.size() > 0)
+        {
+            while (curr !=  null)
+            {
+                s.push((Node) curr);
+                curr =  curr.getLeftChild();
+            }
+ 
+            curr = s.pop();
+ 
+            if (key.compareTo(curr.getKey()) >= 0) {
+            	return (Entry) curr;
+            }
+
+            curr = curr.getRightChild();
+        }
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public T ceilingKey(T key) {
-		// TODO Auto-generated method stub
-		return null;
+	public T ceilingKey(Comparable key) {
+	    Node curr = (Node) ceilingEntry(key);
+	    if (curr == null) { 
+	    	return null;
+	    }else {
+	    	//Comparable k = curr.getKey();
+	    	return (T) curr.getKey();
+	    }
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		tree = new RedBlackTree<T, V>();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean containsKey(T key) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsKey(Comparable key) {
+		Node curr = (Node) ceilingEntry(key);
+	    if (curr == null) { 
+	    	return false;
+	    }else if (key.compareTo(curr.getKey()) == 0) {
+	    	return true;
+	    }else {
+	    	return false;
+		}
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
-		// TODO Auto-generated method stub
+		if (tree.getRoot() == null)
+            return false;
+ 
+        Stack<Node> s = new Stack<Node>();
+        INode curr =  tree.getRoot();
+ 
+        // traverse the tree
+        while (curr != null || s.size() > 0)
+        {
+            while (curr !=  null)
+            {
+                s.push((Node) curr);
+                curr =  curr.getLeftChild();
+            }
+ 
+            curr = s.pop();
+ 
+            if (curr.getValue().equals(value)) {
+            	return true;
+            }
+
+            curr = curr.getRightChild();
+        }
 		return false;
 	}
 
