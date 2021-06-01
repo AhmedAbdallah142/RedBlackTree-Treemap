@@ -249,7 +249,12 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Entry pollFirstEntry() {
-		return null ;
+		if (size() == 0){
+			return null;
+		}
+		Node<T ,V> temp = (Node<T, V>) firstEntry();
+		tree.delete(temp.getKey());
+		return (Entry) temp.getValue();
 	}
 
 	@Override
