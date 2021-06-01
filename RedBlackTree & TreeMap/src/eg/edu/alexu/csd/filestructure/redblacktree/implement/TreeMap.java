@@ -1,12 +1,7 @@
 package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.Stack;
 
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
@@ -319,8 +314,16 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Collection values() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<V> arrayList = new ArrayList<>();
+		return coll((Node) tree.getRoot(),arrayList);
 	}
-
+	public ArrayList coll(Node node,ArrayList<V> arrayList){
+		if (node == null){
+			return arrayList;
+		}
+		coll((Node) node.getLeftChild(), arrayList);
+		arrayList.add((V) node.getValue());
+		coll((Node) node.getRightChild(),arrayList);
+		return arrayList;
+	}
 }
