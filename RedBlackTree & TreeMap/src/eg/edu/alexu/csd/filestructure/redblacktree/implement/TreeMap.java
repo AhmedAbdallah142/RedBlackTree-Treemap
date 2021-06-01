@@ -268,8 +268,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public void put(Comparable key, Object value) {
-		// TODO Auto-generated method stub
+	public void put(T key, V value) {
+		tree.insert(key , value);
+		treeSize++;
 
 	}
 
