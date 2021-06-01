@@ -9,7 +9,7 @@ import java.util.Set;
 
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
-public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
+public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	RedBlackTree<T, V> tree;
 	int treeSize;
@@ -26,7 +26,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
 	}
 
 	@Override
-	public Comparable ceilingKey(Comparable key) {
+	public T ceilingKey(T key) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -38,7 +38,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
 	}
 
 	@Override
-	public boolean containsKey(Comparable key) {
+	public boolean containsKey(T key) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -62,115 +62,106 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
 	}
 
 	@Override
-	public Comparable firstKey() {
+	public T firstKey() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Entry floorEntry(Comparable key) {
-		Node temp = (Node) tree.getRoot();
-		Node Parent = null;
+	public Entry<T, V> floorEntry(T key) {
+		Node<T, V> temp = (Node<T, V>) tree.getRoot();
+		Node<T, V> Parent = null;
 		while (temp != null) {
 			if (temp.getKey().compareTo(key) > 0) {
 				if ((temp.getLeftChild() == null) && (Parent != null)) {
-					return (Entry) Parent;
+					return (Entry<T, V>) Parent;
 				}
-				temp = (Node) temp.getLeftChild();
+				temp = (Node<T, V>) temp.getLeftChild();
 			} else if (temp.getKey().compareTo(key) == 0) {
-				return (Entry) temp;
+				return (Entry<T, V>) temp;
 			} else {
 				if (temp.getRightChild() == null) {
-					return (Entry) temp;
+					return (Entry<T, V>) temp;
 				}
 				Parent = temp;
-				temp = (Node) temp.getRightChild();
+				temp = (Node<T, V>) temp.getRightChild();
 			}
 		}
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Comparable floorKey(Comparable key) {
-		Node temp = (Node) floorEntry(key);
+	public T floorKey(T key) {
+		Node<T, V> temp = (Node<T, V>) floorEntry(key);
 		if (temp == null)
 			return null;
-		return temp.getKey();
+		return (T) temp.getKey();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Object get(Comparable key) {
+	public V get(T key) {
 		return tree.search((T) key);
 	}
 
-	@SuppressWarnings("rawtypes")
+
 	@Override
-	public ArrayList headMap(Comparable toKey) {
-		ArrayList<Node> Nodes = new ArrayList<>();
-		headMapHelper(toKey, false, (Node) tree.getRoot(), Nodes);
+	public ArrayList headMap(T toKey) {
+		ArrayList<Node<T,V>> Nodes = new ArrayList<>();
+		headMapHelper(toKey, false, (Node<T, V>) tree.getRoot(), Nodes);
 		return Nodes;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public ArrayList headMap(Comparable toKey, boolean inclusive) {
-		ArrayList<Node> Nodes = new ArrayList<>();
-		headMapHelper(toKey, inclusive, (Node) tree.getRoot(), Nodes);
+	public ArrayList headMap(T toKey, boolean inclusive) {
+		ArrayList<Node<T,V>> Nodes = new ArrayList<>();
+		headMapHelper(toKey, inclusive, (Node<T, V>) tree.getRoot(), Nodes);
 		return Nodes;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void headMapHelper(Comparable toKey, boolean inclusive, Node temp, ArrayList<Node> Nodes) {
+	private void headMapHelper(T toKey, boolean inclusive, Node<T, V> temp, ArrayList<Node<T, V>> nodes) {
 		if (temp == null)
 			return;
-		headMapHelper(toKey, inclusive, (Node) temp.getLeftChild(), Nodes);
+		headMapHelper(toKey, inclusive, (Node<T, V>) temp.getLeftChild(), nodes);
 		if (temp.getKey().compareTo(toKey) < 0) {
-			Nodes.add(temp);
-			headMapHelper(toKey, inclusive, (Node) temp.getRightChild(), Nodes);
+			nodes.add(temp);
+			headMapHelper(toKey, inclusive, (Node<T, V>) temp.getRightChild(), nodes);
 		} else if (temp.getKey().compareTo(toKey) == 0) {
 			if (inclusive)
-				Nodes.add(temp);
+				nodes.add(temp);
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Set keySet() {
+	public Set<T> keySet() {
 		Set<T> set = new HashSet<T>();
-		keySetHelper((Node) tree.getRoot(), set);
+		keySetHelper((Node<T, V>) tree.getRoot(), set);
 		return set;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void keySetHelper(Node root, Set<T> set) {
+	private void keySetHelper(Node<T, V> root, Set<T> set) {
 		if (root == null)
 			return;
 		set.add((T) root.getKey());
-		keySetHelper((Node) root.getLeftChild(),set);
-		keySetHelper((Node) root.getRightChild(),set);
+		keySetHelper((Node<T, V>) root.getLeftChild(),set);
+		keySetHelper((Node<T, V>) root.getRightChild(),set);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Entry lastEntry() {
-		Node temp = (Node) tree.getRoot();
+	public Entry<T, V> lastEntry() {
+		Node<T, V> temp = (Node<T, V>) tree.getRoot();
 		while (temp!=null) {
 			if (temp.getRightChild()==null)
-				return (Entry) temp;
+				return (Entry<T, V>) temp;
 		}
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Comparable lastKey() {
-		Node temp = (Node) lastEntry();
+	public T lastKey() {
+		Node<T, V> temp = (Node<T, V>) lastEntry();
 		if (temp == null)
 			return null;
-		return temp.getKey();
+		return (T) temp.getKey();
 	}
 
 	@Override
@@ -198,7 +189,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
 	}
 
 	@Override
-	public boolean remove(Comparable key) {
+	public boolean remove(T key) {
 		// TODO Auto-generated method stub
 		return false;
 	}
