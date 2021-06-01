@@ -56,7 +56,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
  
             curr = s.pop();
  
-            if (curr.getKey().compareTo(key) >= 0) {
+            if (curr.getKey() != null && curr.getKey().compareTo(key) >= 0) {
             	return (Entry) curr;
             }
             curr = (Node<T,V>)curr.getRightChild();
@@ -170,7 +170,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		if(tree.isEmpty()) {
 		return null;
 		}else {
-			return (Entry) treeNodes.get(0);
+			Node<T, V> root = (Node<T, V>) tree.getRoot();
+			while(!root.isNull()) {
+				root = (Node<T, V>)root.getLeftChild();
+			}
+			return (Entry) root;
 		}
 	}
 
@@ -180,7 +184,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		if(tree.isEmpty()) {
 			return null;
 		}else {
-			return  (T) treeNodes.get(0).getKey();
+			Node<T,V> last = (Node<T, V>) firstEntry();
+			return  (T) last.getKey();
 		}
 	}
 
