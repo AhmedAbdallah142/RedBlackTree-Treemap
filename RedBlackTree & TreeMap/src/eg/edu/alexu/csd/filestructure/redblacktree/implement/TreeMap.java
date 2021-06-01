@@ -91,6 +91,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public void clear() {
+		treeSize = 0;
 		tree = new RedBlackTree<T, V>();
 	}
 
@@ -349,20 +350,23 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "TreeMap [tree=" + tree + ", treeSize=" + treeSize + ", treeNodes=" + treeNodes + "]";
+	}
 	public static void main(String [] args) {
 		TreeMap<Integer,String> tree = new TreeMap<Integer,String>();
-		tree.put(1,"Mark");
-		tree.put(2, "Faxawy");
-		tree.put(3,"Mark");
-		tree.put(4, "Faxawy");
-		tree.put(5,"Mark");
-		tree.put(6, "Faxawy");
-		tree.put(7,"Mark");
-		tree.put(8, "Faxawy");
+		tree.put(1,"Mark1");
+		tree.put(2, "Faxawy2");
+		tree.put(3,"Mark3");
+		tree.put(4, "Faxawy4");
+		tree.put(5,"Mark5");
+		tree.put(6, "Faxawy6");
+		tree.put(7,"Mark7");
+		tree.put(8, "Faxawy8");
+		//tree.ceilingEntry(7);
 		
-		
-		
-		TreeMap<Integer, String> tree1 = new TreeMap<Integer, String>();
+		java.util.TreeMap<Integer, String> tree1 = new java.util.TreeMap<Integer, String>();
 		tree1.put(1,"Mark");
 		tree1.put(2, "Faxawy");
 		tree1.put(3,"Mark");
@@ -371,9 +375,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(6, "Faxawy");
 		tree1.put(7,"Mark");
 		tree1.put(8, "Faxawy");
-		System.out.println(tree1);
-		
-		
+		//System.out.println(tree1);
+		System.out.println(tree1.ceilingEntry(7));
+		System.out.println(tree.ceilingEntry(7));
 		
 	}
 	
