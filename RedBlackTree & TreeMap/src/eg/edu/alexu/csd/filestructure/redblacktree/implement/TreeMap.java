@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
-@SuppressWarnings("rawtypes")
+
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	RedBlackTree<T, V> tree;
@@ -15,9 +15,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree = new RedBlackTree<>();
 		treeSize = 0;
 	}
-	ArrayList<Node> treeNodes = new ArrayList<Node>();
+	ArrayList<Node<T,V>> treeNodes = new ArrayList<Node<T,V>>();
 	@SuppressWarnings("unchecked")
-	int lower_bound(Comparable key)
+	int lower_bound(T key)
 	{
 	    int mid;
 	    int low = 0;
@@ -40,7 +40,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public Entry ceilingEntry(Comparable key) {
+	public Entry ceilingEntry(T key) {
 		if (tree.isEmpty())
             return null;
        /* Stack<Node> s = new Stack<Node>();
@@ -81,8 +81,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T ceilingKey(Comparable key) {
-	    Node curr = (Node) ceilingEntry(key);
+	public T ceilingKey(T key) {
+	    Node<T,V> curr = (Node<T,V>) ceilingEntry(key);
 	    if (curr == null) { 
 	    	return null;
 	    }else {
@@ -98,8 +98,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean containsKey(Comparable key) {
-		Node curr = (Node) ceilingEntry(key);
+	public boolean containsKey(T key) {
+		Node<T,V> curr = (Node<T,V>) ceilingEntry(key);
 	    if (curr == null) { 
 	    	return false;
 	    }else if (key.compareTo(curr.getKey()) == 0) {
@@ -114,16 +114,16 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		if (tree.getRoot() == null)
             return false;
  
-        Stack<Node> s = new Stack<Node>();
-        INode curr =  tree.getRoot();
+        Stack<Node<T,V>> s = new Stack<Node<T,V>>();
+        Node<T,V> curr =  (Node<T, V>) tree.getRoot();
  
         // traverse the tree
         while (curr != null || s.size() > 0)
         {
             while (curr !=  null)
             {
-                s.push((Node) curr);
-                curr =  curr.getLeftChild();
+                s.push((Node<T,V>) curr);
+                curr =  (Node<T, V>) curr.getLeftChild();
             }
  
             curr = s.pop();
@@ -132,14 +132,15 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
             	return true;
             }
 
-            curr = curr.getRightChild();
+            curr = (Node<T, V>) curr.getRightChild();
         }
 		return false;
 	}
 
+
 	@Override
 	public Set entrySet() {
-		Set<Node> set  = new HashSet<Node>();
+		Set<Node<T,V>> set  = new HashSet<Node<T,V>>();
 		set.addAll(treeNodes);
 		return set;
 	}
