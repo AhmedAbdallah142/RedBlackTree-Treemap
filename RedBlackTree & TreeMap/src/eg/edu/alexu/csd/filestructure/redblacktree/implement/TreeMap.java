@@ -381,8 +381,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(7,"Mark");
 		tree1.put(8, "Faxawy");
 		//System.out.println(tree1);
-		System.out.println(tree1.entrySet());
-		System.out.println(tree.entrySet());
+		System.out.println(tree1.floorEntry(9));
+		System.out.println(tree.floorEntry(9));
 	}
 	
 	
