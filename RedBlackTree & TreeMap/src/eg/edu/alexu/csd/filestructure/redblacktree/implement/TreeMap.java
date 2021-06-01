@@ -8,16 +8,16 @@ import java.util.Set;
 
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
-public class TreeMap<T extends Comparable<T>, V> implements ITreeMap{
-	
+public class TreeMap<T extends Comparable<T>, V> implements ITreeMap {
+
 	RedBlackTree<T, V> tree;
 	int treeSize;
+
 	public TreeMap() {
 		tree = new RedBlackTree<>();
 		treeSize = 0;
 	}
-	
-	
+
 	@Override
 	public Entry ceilingEntry(Comparable key) {
 		// TODO Auto-generated method stub
@@ -33,7 +33,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap{
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -70,50 +70,65 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap{
 	@Override
 	public Entry floorEntry(Comparable key) {
 		Node temp = (Node) tree.getRoot();
-		Node Parent =  null;
+		Node Parent = null;
 		while (temp != null) {
-			if (temp.getKey().compareTo(key)>0) {
-				if ((temp.getLeftChild()==null)&&(Parent!=null)) {
+			if (temp.getKey().compareTo(key) > 0) {
+				if ((temp.getLeftChild() == null) && (Parent != null)) {
 					return (Entry) Parent;
 				}
 				temp = (Node) temp.getLeftChild();
-			}
-			else if (temp.getKey().compareTo(key) == 0) {
+			} else if (temp.getKey().compareTo(key) == 0) {
 				return (Entry) temp;
-			}
-			else {
-				if (temp.getRightChild()==null) {
+			} else {
+				if (temp.getRightChild() == null) {
 					return (Entry) temp;
-				}	
+				}
 				Parent = temp;
-				temp = (Node) temp.getRightChild();	
+				temp = (Node) temp.getRightChild();
 			}
 		}
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Comparable floorKey(Comparable key) {
-		// TODO Auto-generated method stub
-		return null;
+		Node temp = (Node) floorEntry(key);
+		if (temp == null)
+			return null;
+		return temp.getKey();
 	}
 
 	@Override
 	public Object get(Comparable key) {
-		// TODO Auto-generated method stub
-		return null;
+		return tree.search((T) key);
 	}
 
 	@Override
 	public ArrayList headMap(Comparable toKey) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public ArrayList headMap(Comparable toKey, boolean inclusive) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Node> Nodes = new ArrayList<>();
+		headMapHelper(toKey, inclusive, (Node) tree.getRoot(), Nodes);
+		return Nodes;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void headMapHelper(Comparable toKey, boolean inclusive, Node temp, ArrayList<Node> Nodes) {
+		if (temp == null)
+			return;
+		headMapHelper(toKey, inclusive, (Node) temp.getLeftChild(), Nodes);
+		if (temp.getKey().compareTo(toKey) < 0) {
+			Nodes.add(temp);
+			headMapHelper(toKey, inclusive, (Node) temp.getRightChild(), Nodes);
+		} else if (temp.getKey().compareTo(toKey) == 0) {
+			if (inclusive)
+				Nodes.add(temp);
+		}
 	}
 
 	@Override
@@ -149,13 +164,13 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap{
 	@Override
 	public void put(Comparable key, Object value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void putAll(Map map) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
