@@ -56,7 +56,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
  
             curr = s.pop();
  
-            if (curr.getKey().compareTo(key) >= 0) {
+            if (curr.getKey() != null && curr.getKey().compareTo(key) >= 0) {
             	return (Entry) curr;
             }
             curr = (Node<T,V>)curr.getRightChild();
