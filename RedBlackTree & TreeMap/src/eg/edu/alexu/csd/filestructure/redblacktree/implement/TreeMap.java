@@ -14,9 +14,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		T key;
 		V value;
 
-		entry(T key, V value) {
-			this.key = key;
-			this.value = value;
+		entry(INode<T,V> node) {
+			this.key = node.getKey();
+			this.value = node.getValue();
 		}
 
 		@Override
@@ -89,7 +89,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			curr = s.pop();
 
 			if (curr.getKey().compareTo(key) >= 0) {
-				return new entry(curr.getKey(), curr.getValue());
+				return new entry( curr);
 			}
 			curr = curr.getRightChild();
 		}
@@ -156,13 +156,13 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return false;
 	}
 
-	void addSetInOrder(INode<T, V> node, ArrayList<Entry<T, V>> list) {
+	void addSetInOrder(INode<T, V> node, Set<Entry<T, V>> list) {
 		if (node.isNull())
 			return;
 		/* first recur on left child */
 		addSetInOrder(node.getLeftChild(), list);
 		if (node.getKey() != null) {
-			list.add(new entry(node.getKey(), node.getValue()));
+			list.add(new entry( node));
 		}
 		addSetInOrder(node.getRightChild(), list);
 	}
@@ -176,29 +176,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 				return o1.getKey().compareTo(o2.getKey());
 			}
 		};
-		//Set<INode<T, V>> set = new TreeSet<INode<T, V>>(keyComparator);
 		Set<Entry<T, V>> set = new TreeSet<Entry<T, V>>(keyComparator);
 		if (tree.isEmpty())
 			return null;
-		// Stack<Node<T,V>> s = new Stack<Node<T,V>>();
 		INode<T, V> curr = tree.getRoot();
-		/*
-		 * // traverse the tree while (curr != null || s.size() > 0) { while (curr !=
-		 * null) { s.push((Node<T,V>) curr); curr = (Node<T,V>) curr.getLeftChild(); }
-		 * curr = s.pop(); //if(curr.getKey() != null) { set.add(curr);//} curr =
-		 * (Node<T,V>)curr.getRightChild(); }
-		 */
-		ArrayList<Entry<T, V>> list = new ArrayList<Entry<T, V>>();
-		addSetInOrder(curr, list);
-		/*
-		 * Comparator<INode<T, V>> NodeComparator = new Comparator<INode<T, V>>() {
-		 * 
-		 * public int compare(INode<T, V> s1, INode<T, V> s2) { return
-		 * s1.getKey().compareTo(s2.getKey()); } }; Collections.sort(list,
-		 * NodeComparator);
-		 */
-		System.out.println(list);
-		set.addAll(list);
+		addSetInOrder(curr, set);
 		return set;
 	}
 
@@ -211,7 +193,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			while (!root.isNull()) {
 				root = root.getLeftChild();
 			}
-			return new entry(root.getKey(), root.getValue());
+			return new entry(root);
 		}
 	}
 
@@ -232,14 +214,14 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		while (!temp.isNull()) {
 			if (temp.getKey().compareTo(key) > 0) {
 				if (!Parent.isNull()) {
-					return new entry(Parent.getKey(), Parent.getValue());
+					return new entry(Parent);
 				}
 				temp = temp.getLeftChild();
 			} else if (temp.getKey().compareTo(key) == 0) {
-				return new entry(temp.getKey(), temp.getValue());
+				return new entry(temp);
 			} else {
 				if (temp.getRightChild().isNull()) {
-					return new entry(temp.getKey(), temp.getValue());
+					return new entry(temp);
 				}
 				Parent = temp;
 				temp = temp.getRightChild();
@@ -280,11 +262,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			return;
 		headMapHelper(toKey, inclusive, temp.getLeftChild(), nodes);
 		if (temp.getKey().compareTo(toKey) < 0) {
-			nodes.add(new entry(temp.getKey(),temp.getValue()));
+			nodes.add(new entry(temp));
 			headMapHelper(toKey, inclusive, temp.getRightChild(), nodes);
 		} else if (temp.getKey().compareTo(toKey) == 0) {
 			if (inclusive)
-				nodes.add(new entry(temp.getKey(),temp.getValue()));
+				nodes.add(new entry(temp));
 		}
 	}
 
@@ -308,7 +290,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		INode<T, V> temp = tree.getRoot();
 		while (!temp.isNull()) {
 			if (temp.getRightChild().isNull())
-				return new entry(temp.getKey(),temp.getValue());
+				return new entry(temp);
 			temp = temp.getRightChild();
 		}
 		return null;
