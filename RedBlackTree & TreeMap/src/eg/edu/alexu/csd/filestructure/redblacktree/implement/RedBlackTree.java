@@ -31,6 +31,9 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public V search(T key) {
+		if(root==null) {
+			return null;
+		}
 		INode<T, V> curr = this.root;
 		while (curr != nill) {
 			if (key.compareTo(curr.getKey()) < 0) // key < current.key
