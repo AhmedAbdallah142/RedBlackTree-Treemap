@@ -20,7 +20,6 @@ import java.util.TreeMap;
 
 import javax.management.RuntimeErrorException;
 
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,10 +32,8 @@ public class UnitTest {
 	 */
 	@Test
 	public void testRootNull() {
-
 		IRedBlackTree<String, String> redBlackTree = (IRedBlackTree<String, String>) TestRunner.getImplementationInstanceForInterface(IRedBlackTree.class);
 		INode<String, String> root = null;
-
 		try {
 			root = redBlackTree.getRoot();
 			if (debug)
