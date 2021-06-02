@@ -39,7 +39,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		public String toString() {
 			return "entry [key=" + key + ", value=" + value + "]";
 		}
-		
+
 	};
 
 	int treeSize;
@@ -213,8 +213,13 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		INode<T, V> Parent = null;
 		while (!temp.isNull()) {
 			if (temp.getKey().compareTo(key) > 0) {
+<<<<<<< HEAD
 				if (!Parent.isNull()) {
 					return new entry(Parent);
+=======
+				if ((Parent!=null)&&(temp.getLeftChild().isNull())) {
+					return new entry(Parent.getKey(), Parent.getValue());
+>>>>>>> branch 'master' of https://github.com/AhmedAbdallah142/RedBlackTree-Treemap.git
 				}
 				temp = temp.getLeftChild();
 			} else if (temp.getKey().compareTo(key) == 0) {
@@ -244,14 +249,14 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public ArrayList<Entry<T,V>> headMap(T toKey) {
+	public ArrayList<Entry<T, V>> headMap(T toKey) {
 		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, false, tree.getRoot(), Nodes);
 		return Nodes;
 	}
 
 	@Override
-	public ArrayList<Entry<T,V>> headMap(T toKey, boolean inclusive) {
+	public ArrayList<Entry<T, V>> headMap(T toKey, boolean inclusive) {
 		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, inclusive, tree.getRoot(), Nodes);
 		return Nodes;
@@ -305,7 +310,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public Entry<T,V> pollFirstEntry() {
+	public Entry<T, V> pollFirstEntry() {
 		if (size() == 0) {
 			return null;
 		}
@@ -315,7 +320,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public Entry<T,V> pollLastEntry() {
+	public Entry<T, V> pollLastEntry() {
 		if (size() == 0) {
 			return null;
 		}
@@ -389,19 +394,48 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree.put(7, "Mark7");
 		tree.put(8, "Faxawy8");
 		tree.put(4, "Faxawy4");
-		// tree.ceilingEntry(7);
+
 
 		java.util.TreeMap<Integer, String> tree1 = new java.util.TreeMap<Integer, String>();
-		/*
-		 * tree1.put(1,"Mark"); tree1.put(2, "Faxawy"); tree1.put(3,"Mark");
-		 * tree1.put(4, "Faxawy"); tree1.put(5,"Mark"); tree1.put(6, "Faxawy");
-		 * tree1.put(7,"Mark"); tree1.put(8, "Faxawy"); //System.out.println(tree1);
-		 */
-		tree.putAll(tree1);
-		// System.out.println(tree.keySet());
-		System.out.println(tree.entrySet());
-		// System.out.println(tree1.lastEntry());
-		// System.out.println(tree.pollFirstEntry());
+
+		tree1.put(1, "Mark");
+		tree1.put(2, "Faxawy");
+		tree1.put(3, "Mark");
+		tree1.put(5, "Mark");
+		tree1.put(6, "Faxawy");
+		tree1.put(7, "Mark");
+		tree1.put(8, "Faxawy");
+		tree1.put(4, "Faxawy");
+		
+		
+		
+		// Ahmed Abdallah tests
+		System.out.println(tree.floorEntry(9));
+		System.out.println(tree1.floorEntry(9));
+		System.out.println(tree.floorEntry(2));
+		System.out.println(tree1.floorEntry(2));
+		System.out.println(tree.floorKey(0));
+		System.out.println(tree1.floorKey(0));
+		System.out.println(tree.floorKey(12));
+		System.out.println(tree1.floorKey(12));
+		System.out.println(tree.get(0));
+		System.out.println(tree1.get(0));
+		System.out.println(tree.get(8));
+		System.out.println(tree1.get(8));
+		System.out.println(tree.headMap(0));
+		System.out.println(tree1.headMap(0));
+		System.out.println(tree.headMap(8));
+		System.out.println(tree1.headMap(8));
+		System.out.println(tree.headMap(0,true));
+		System.out.println(tree1.headMap(0,true));
+		System.out.println(tree.headMap(8,true));
+		System.out.println(tree1.headMap(8,true));
+		System.out.println(tree.keySet());
+		System.out.println(tree1.keySet());
+		System.out.println(tree.lastEntry());
+		System.out.println(tree1.lastEntry());
+		System.out.println(tree.lastKey());
+		System.out.println(tree1.lastKey());
 	}
 
 }
