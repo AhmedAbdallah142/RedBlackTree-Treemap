@@ -9,6 +9,39 @@ import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	RedBlackTree<T, V> tree;
+
+	class entry implements Entry<T, V> {
+		T key;
+		V value;
+
+		entry(T key, V value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		@Override
+		public T getKey() {
+			return key;
+		}
+
+		@Override
+		public V getValue() {
+			return value;
+		}
+
+		@Override
+		public V setValue(V value) {
+			this.value = value;
+			return value;
+		}
+
+		@Override
+		public String toString() {
+			return "entry [key=" + key + ", value=" + value + "]";
+		}
+		
+	};
+
 	int treeSize;
 
 	public TreeMap() {
@@ -56,7 +89,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			curr = s.pop();
 
 			if (curr.getKey().compareTo(key) >= 0) {
-				return (Entry<T, V>) curr;
+				return new entry(curr.getKey(), curr.getValue());
 			}
 			curr = curr.getRightChild();
 		}
@@ -73,12 +106,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public T ceilingKey(T key) {
-		INode<T, V> curr = (INode<T, V>) ceilingEntry(key);
-		if (curr.isNull()) {
+		Entry<T, V> curr = ceilingEntry(key);
+		if (curr == null) {
 			return null;
 		} else {
-			// Comparable k = curr.getKey();
-			return (T) curr.getKey();
+			return curr.getKey();
 		}
 	}
 
@@ -124,28 +156,28 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return false;
 	}
 
-	void addSetInOrder(INode<T, V> node, ArrayList<INode<T, V>> list) {
+	void addSetInOrder(INode<T, V> node, ArrayList<Entry<T, V>> list) {
 		if (node.isNull())
 			return;
 		/* first recur on left child */
 		addSetInOrder(node.getLeftChild(), list);
 		if (node.getKey() != null) {
-			list.add(node);
+			list.add(new entry(node.getKey(), node.getValue()));
 		}
 		addSetInOrder(node.getRightChild(), list);
 	}
 
 	@Override
-	public Set entrySet() {
+	public Set<Entry<T, V>> entrySet() {
 
-		Comparator<INode<T, V>> key = new Comparator<INode<T, V>>() {
-
+		Comparator<Entry<T, V>> keyComparator = new Comparator<Entry<T, V>>() {
 			@Override
-			public int compare(INode<T, V> o1, INode<T, V> o2) {
+			public int compare(Entry<T, V> o1, Entry<T, V> o2) {
 				return o1.getKey().compareTo(o2.getKey());
 			}
 		};
-		Set<INode<T, V>> set = new TreeSet<INode<T, V>>(key);
+		//Set<INode<T, V>> set = new TreeSet<INode<T, V>>(keyComparator);
+		Set<Entry<T, V>> set = new TreeSet<Entry<T, V>>(keyComparator);
 		if (tree.isEmpty())
 			return null;
 		// Stack<Node<T,V>> s = new Stack<Node<T,V>>();
@@ -156,7 +188,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		 * curr = s.pop(); //if(curr.getKey() != null) { set.add(curr);//} curr =
 		 * (Node<T,V>)curr.getRightChild(); }
 		 */
-		ArrayList<INode<T, V>> list = new ArrayList<INode<T, V>>();
+		ArrayList<Entry<T, V>> list = new ArrayList<Entry<T, V>>();
 		addSetInOrder(curr, list);
 		/*
 		 * Comparator<INode<T, V>> NodeComparator = new Comparator<INode<T, V>>() {
@@ -171,7 +203,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public Entry firstEntry() {
+	public Entry<T, V> firstEntry() {
 		if (tree.isEmpty()) {
 			return null;
 		} else {
@@ -179,7 +211,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			while (!root.isNull()) {
 				root = root.getLeftChild();
 			}
-			return (Entry) root;
+			return new entry(root.getKey(), root.getValue());
 		}
 	}
 
@@ -188,8 +220,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		if (tree.isEmpty()) {
 			return null;
 		} else {
-			INode<T, V> last = (INode<T, V>) firstEntry();
-			return (T) last.getKey();
+			Entry<T, V> last = firstEntry();
+			return last.getKey();
 		}
 	}
 
@@ -200,14 +232,14 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		while (!temp.isNull()) {
 			if (temp.getKey().compareTo(key) > 0) {
 				if (!Parent.isNull()) {
-					return (Entry<T, V>) Parent;
+					return new entry(Parent.getKey(), Parent.getValue());
 				}
 				temp = temp.getLeftChild();
 			} else if (temp.getKey().compareTo(key) == 0) {
-				return (Entry<T, V>) temp;
+				return new entry(temp.getKey(), temp.getValue());
 			} else {
 				if (temp.getRightChild().isNull()) {
-					return (Entry<T, V>) temp;
+					return new entry(temp.getKey(), temp.getValue());
 				}
 				Parent = temp;
 				temp = temp.getRightChild();
@@ -218,8 +250,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public T floorKey(T key) {
-		INode<T, V> temp = (INode<T, V>) floorEntry(key);
-		if (temp.isNull())
+		Entry<T, V> temp = floorEntry(key);
+		if (temp == null)
 			return null;
 		return (T) temp.getKey();
 	}
@@ -230,29 +262,29 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public ArrayList headMap(T toKey) {
-		ArrayList<INode<T, V>> Nodes = new ArrayList<>();
+	public ArrayList<Entry<T,V>> headMap(T toKey) {
+		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, false, tree.getRoot(), Nodes);
 		return Nodes;
 	}
 
 	@Override
-	public ArrayList headMap(T toKey, boolean inclusive) {
-		ArrayList<INode<T, V>> Nodes = new ArrayList<>();
+	public ArrayList<Entry<T,V>> headMap(T toKey, boolean inclusive) {
+		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, inclusive, tree.getRoot(), Nodes);
 		return Nodes;
 	}
 
-	private void headMapHelper(T toKey, boolean inclusive, INode<T, V> temp, ArrayList<INode<T, V>> nodes) {
+	private void headMapHelper(T toKey, boolean inclusive, INode<T, V> temp, ArrayList<Entry<T, V>> nodes) {
 		if (temp.isNull())
 			return;
 		headMapHelper(toKey, inclusive, temp.getLeftChild(), nodes);
 		if (temp.getKey().compareTo(toKey) < 0) {
-			nodes.add(temp);
+			nodes.add(new entry(temp.getKey(),temp.getValue()));
 			headMapHelper(toKey, inclusive, temp.getRightChild(), nodes);
 		} else if (temp.getKey().compareTo(toKey) == 0) {
 			if (inclusive)
-				nodes.add(temp);
+				nodes.add(new entry(temp.getKey(),temp.getValue()));
 		}
 	}
 
@@ -276,7 +308,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		INode<T, V> temp = tree.getRoot();
 		while (!temp.isNull()) {
 			if (temp.getRightChild().isNull())
-				return (Entry<T, V>) temp;
+				return new entry(temp.getKey(),temp.getValue());
 			temp = temp.getRightChild();
 		}
 		return null;
@@ -284,30 +316,30 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public T lastKey() {
-		INode<T, V> temp = (INode<T, V>) lastEntry();
-		if (temp.isNull())
+		Entry<T, V> temp = lastEntry();
+		if (temp == null)
 			return null;
 		return (T) temp.getKey();
 	}
 
 	@Override
-	public Entry pollFirstEntry() {
+	public Entry<T,V> pollFirstEntry() {
 		if (size() == 0) {
 			return null;
 		}
-		INode<T, V> temp = (INode<T, V>) firstEntry();
+		Entry<T, V> temp = firstEntry();
 		tree.delete(temp.getKey());
-		return (Entry) temp.getValue();
+		return temp;
 	}
 
 	@Override
-	public Entry pollLastEntry() {
+	public Entry<T,V> pollLastEntry() {
 		if (size() == 0) {
 			return null;
 		}
-		INode<T, V> temp = (INode<T, V>) lastEntry();
+		Entry<T, V> temp = lastEntry();
 		tree.delete(temp.getKey());
-		return (Entry) temp.getValue();
+		return temp;
 	}
 
 	@Override
@@ -345,7 +377,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public Collection values() {
+	public Collection<V> values() {
 		ArrayList<V> arrayList = new ArrayList<>();
 		return coll(tree.getRoot(), arrayList);
 	}
@@ -370,7 +402,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree.put(1, "Mark1");
 		tree.put(2, "Faxawy2");
 		tree.put(3, "Mark3");
-
 		tree.put(5, "Mark5");
 		tree.put(6, "Faxawy6");
 		tree.put(7, "Mark7");
