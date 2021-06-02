@@ -349,6 +349,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public void putAll(Map<T, V> map) {
+		if (map==null)
+			throw new RuntimeErrorException(null);
 		tree = new RedBlackTree<T, V>();
 		/*T [] key = (T[]) map.keySet().toArray();
 		V [] val = (V[]) map.values().toArray();

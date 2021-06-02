@@ -1,5 +1,8 @@
 package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 
+
+import javax.management.RuntimeErrorException;
+
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.IRedBlackTree;
 
@@ -7,7 +10,6 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	private INode<T, V> nill;
 	private INode<T, V> root;
-	static int size = 0;
 
 	public RedBlackTree() {
 		nill = new Node<T, V>();
@@ -16,6 +18,8 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public INode<T, V> getRoot() {
+		if (isEmpty())
+			return nill;
 		return this.root;
 	}
 
@@ -31,6 +35,7 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public V search(T key) {
+		if(key == null) throw new RuntimeErrorException(null, "Error, null key");
 		if (isEmpty()) {
 			return null;
 		}
@@ -53,8 +58,10 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public void insert(T key, V value) {
+		if(key == null) throw new RuntimeErrorException(null, "Error, null key");
+		if(value == null) throw new RuntimeErrorException(null, "Error, null value");
 		/*** insert in suitable place like any BST ***/
-			size++;
+		
 		// if root is null, easy
 		if (root == null) {
 			root = new Node<T, V>(key, value, null);
@@ -134,11 +141,11 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public boolean delete(T key) {
+		if(key == null) throw new RuntimeErrorException(null, "Error, null key");
 		return deletNode(root, key);
 	}
 
 	private boolean deletNode(INode<T, V> node, T key) {
-		size--;
 		INode<T, V> z = nill;
 		INode<T, V> x, y;
 		// we need first to get the node.
@@ -330,9 +337,6 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 			x.getParent().setRightChild(y);
 		y.setLeftChild(x);
 		x.setParent(y);
-	}
-	public int tree_size(){
-		return size;
 	}
 
 	public static void main(String[] args) {
