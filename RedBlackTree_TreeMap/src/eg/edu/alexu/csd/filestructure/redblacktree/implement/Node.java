@@ -1,5 +1,8 @@
 package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 
+import java.util.Map.Entry;
+import java.util.AbstractMap;
+
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 
 public class Node<T extends Comparable<T>, V> implements INode<T, V> {
@@ -84,6 +87,10 @@ public class Node<T extends Comparable<T>, V> implements INode<T, V> {
 	@Override
 	public boolean isNull() {
 		return this.key == null ;
+	}
+	
+	public Entry<T, V> asEntry() {
+		return new AbstractMap.SimpleEntry<T,V>(this.key, this.value);
 	}
 
 	@Override
