@@ -1454,8 +1454,6 @@ public class UnitTest {
 				t.put(key, "soso" + key);
 				treemap.put(key, "soso" + key);
 			}
-			System.out.println(t.entrySet());
-			System.out.println(treemap.entrySet());
 			Assert.assertEquals(t.size(), treemap.size());
 			Assert.assertEquals(t.pollFirstEntry(), treemap.pollFirstEntry());
 			Assert.assertEquals(t.size(), treemap.size());

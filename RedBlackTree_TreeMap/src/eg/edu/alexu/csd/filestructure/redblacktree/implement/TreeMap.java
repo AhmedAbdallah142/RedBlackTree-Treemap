@@ -4,16 +4,10 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import javax.management.RuntimeErrorException;
-
-import org.junit.Assert;
-
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
-
-	RedBlackTree<T, V> tree;
-	
 	class entry implements Entry<T, V> {
 		T key;
 		V value;
@@ -45,12 +39,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		}
 
 	};
-
-	int treeSize;
-
+	RedBlackTree<T, V> tree;
 	public TreeMap() {
 		tree = new RedBlackTree<>();
-		treeSize = 0;
 	}
 
 	ArrayList<INode<T, V>> treeNodes = new ArrayList<INode<T, V>>();
@@ -122,7 +113,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public void clear() {
-		treeSize = 0;
 		tree = new RedBlackTree<T, V>();
 	}
 
@@ -328,31 +318,27 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Entry<T, V> pollFirstEntry() {
-		if (treeSize == 0) {
+		if (size() == 0) {
 			return null;
 		}
 		Entry<T, V> temp = firstEntry();
 		tree.delete(temp.getKey());
-		treeSize--;
 		return temp;
 	}
 
 	@Override
 	public Entry<T, V> pollLastEntry()  {
-		if (treeSize == 0) {
-			throw new RuntimeErrorException(null);
+		if (size() == 0) {
+			return null;
 		}
 		Entry<T, V> temp = lastEntry();
 		tree.delete(temp.getKey());
-		treeSize--;
 		return temp;
 	}
 
 	@Override
 	public void put(T key, V value) {
 		tree.insert(key, value);
-		treeSize++;
-
 	}
 
 	@Override
@@ -370,7 +356,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			V val = entry.getValue();
 			tree.insert(key,val);
 		}
-		treeSize = map.size();
 	}
 
 	/*public void inOrder(INode<T, V> node, Map<T, V> map) {
@@ -387,15 +372,12 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	public boolean remove(T key) {
 		if (key==null)
 			throw new RuntimeErrorException(null);
-		if (treeSize != 0) {
-			treeSize--;
-		}
 		return tree.delete(key);
 	}
 
 	@Override
 	public int size() {
-		return treeSize;
+		return entrySet().size();
 	}
 
 	@Override
@@ -414,9 +396,10 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return arrayList;
 	}
 
+
 	@Override
 	public String toString() {
-		return "TreeMap [tree=" + tree + ", treeSize=" + treeSize + ", treeNodes=" + treeNodes + "]";
+		return "TreeMap [tree=" + tree + ", treeNodes=" + treeNodes + "]";
 	}
 
 	public static void main(String[] args) {
