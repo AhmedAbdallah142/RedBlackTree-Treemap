@@ -341,10 +341,21 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public void putAll(Map<T, V> map) {
-		inOrder(tree.getRoot(), map);
+		tree = new RedBlackTree<T, V>();
+		/*T [] key = (T[]) map.keySet().toArray();
+		V [] val = (V[]) map.values().toArray();
+		for (int i=0 ; i< map.size() ; i++){
+			tree.insert(key[i] , val[i]);
+		}*/
+		for ( Map.Entry<T, V> entry : map.entrySet()) {
+			T key = entry.getKey();
+			V val = entry.getValue();
+			tree.insert(key,val);
+		}
+		treeSize = map.size();
 	}
 
-	public void inOrder(INode<T, V> node, Map<T, V> map) {
+	/*public void inOrder(INode<T, V> node, Map<T, V> map) {
 		if (node.isNull()) {
 			return;
 		}
@@ -352,6 +363,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		map.put(node.getKey(), node.getValue());
 		inOrder(node.getRightChild(), map);
 	}
+	}*/
 
 	@Override
 	public boolean remove(T key) {
@@ -468,6 +480,34 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		System.out.println(tree1.lastEntry());
 		System.out.println(tree.lastKey());
 		System.out.println(tree1.lastKey());
+		//Mark Test
+		/*//17
+		System.out.println(tree1.pollFirstEntry());
+		System.out.println(tree.pollFirstEntry());
+		//18
+		System.out.println(tree1.pollLastEntry());
+		System.out.println(tree.pollLastEntry());
+		//19
+		in main
+		//20
+		/*Map<Integer, String> map = new HashMap<>();
+		map.put(1,"mark100");
+		map.put(5,"mark500");
+		map.put(2,"mark200");
+		map.put(6,"mark600");
+		tree.putAll(map);
+		System.out.println(tree.entrySet());
+		//21
+		System.out.println(tree.remove(1));
+		System.out.println(tree1.remove(1));
+		System.out.println(tree.entrySet());
+		System.out.println(tree1.entrySet());
+		//22
+		System.out.println(tree.size());
+		System.out.println(tree1.size());
+		//23
+		System.out.println(tree.values());
+		System.out.println(tree1.values());*/
 	}
 
 }
