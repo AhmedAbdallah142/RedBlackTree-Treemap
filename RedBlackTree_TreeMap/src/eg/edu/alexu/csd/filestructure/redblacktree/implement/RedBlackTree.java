@@ -14,23 +14,22 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 	public RedBlackTree() {
 		nill = new Node<T, V>();
 		nill.setColor(false);
+		root = nill;
 	}
 
 	@Override
 	public INode<T, V> getRoot() {
-		if (isEmpty())
-			return nill;
 		return this.root;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return this.root == null;
+		return this.root == nill;
 	}
 
 	@Override
 	public void clear() {
-		this.root = null;
+		this.root = nill;
 	}
 
 	@Override
@@ -62,8 +61,8 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 		if(value == null) throw new RuntimeErrorException(null, "Error, null value");
 		/*** insert in suitable place like any BST ***/
 		
-		// if root is null, easy
-		if (root == null || root == nill) {
+		// if empty tree, easy
+		if (isEmpty()) {
 			root = new Node<T, V>(key, value, null);
 			root.setColor(false);
 			root.setLeftChild(nill);
@@ -142,9 +141,9 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 	@Override
 	public boolean delete(T key) {
 		if(key == null) throw new RuntimeErrorException(null, "Error, null key");
+		if(this.isEmpty()) throw new RuntimeErrorException(null, "Error, deleting from empty tree");
+		
 		boolean check = deletNode(root, key);
-		if (root.isNull())
-			root = null;
 		return check;
 	}
 
@@ -163,7 +162,6 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 			}
 		}
 		if (z == nill) { // if not found print message.
-			System.out.println("Couldn't find key in the tree");
 			return false;
 		}
 
@@ -344,16 +342,10 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	public static void main(String[] args) {
 		RedBlackTree<Integer, Integer> t = new RedBlackTree<Integer, Integer>();
-		//t.insert(5, -1);
-		//t.insert(3, 7);
 		t.insert(8, -1);
-		/*t.insert(7, -1);
-		t.insert(10, 2);
-		t.insert(9, -1);*/
 		t.delete(8);
-		t.insert(3, 1);
+		t.insert(8, -1);
 		t.printTree(t.root);
-		System.out.println(t.search(10));
 	}
 
 	// DFS left
