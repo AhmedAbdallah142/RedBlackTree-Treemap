@@ -341,12 +341,12 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	public static void main(String[] args) {
 		RedBlackTree<Integer, Integer> t = new RedBlackTree<Integer, Integer>();
-		t.insert(5, -1);
-		t.insert(3, 7);
+		//t.insert(5, -1);
+		//t.insert(3, 7);
 		t.insert(8, -1);
-		t.insert(7, -1);
+		/*t.insert(7, -1);
 		t.insert(10, 2);
-		t.insert(9, -1);
+		t.insert(9, -1);*/
 		t.delete(8);
 		t.printTree(t.root);
 		System.out.println(t.search(10));

@@ -329,7 +329,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	@Override
 	public Entry<T, V> pollFirstEntry() {
 		if (treeSize == 0) {
-			throw new RuntimeErrorException(null);
+			return null;
 		}
 		Entry<T, V> temp = firstEntry();
 		tree.delete(temp.getKey());
@@ -420,7 +420,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	public static void main(String[] args) {
-		/*TreeMap<Integer, String> tree = new TreeMap<Integer, String>();
+		TreeMap<Integer, String> tree = new TreeMap<Integer, String>();
 		tree.lastEntry();
 		tree.put(1, "Mark1");
 		tree.put(2, "Faxawy2");
@@ -445,7 +445,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(4, "Faxawy");
 		//tree1.put(10, "fax");
 		
-		// Ahmed Ashraf tests
+		/*// Ahmed Ashraf tests
 		System.out.println(tree.ceilingEntry(9));
 		System.out.println(tree1.ceilingEntry(9));
 		System.out.println(tree.ceilingEntry(4));
@@ -529,22 +529,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		//23
 		System.out.println(tree.values());
 		System.out.println(tree1.values());*/
-		TreeMap<Integer, String> treemap = new TreeMap<>();
-		java.util.TreeMap<Integer, String> t = new java.util.TreeMap<>();
-		Random r = new Random();
-		for (int i = 0; i < 1000; i++) {
-			int key = r.nextInt(10000);
-			t.put(key, "soso" + key);
-			treemap.put(key, "soso" + key);
-		}
-		Iterator<Entry<Integer, String>> itr1 = treemap.entrySet().iterator();
-		Iterator<Entry<Integer, String>> itr2 = t.entrySet().iterator();
 		
-		while(itr1.hasNext() && itr2.hasNext()) {
-			Entry<Integer, String> entry1 = itr1.next();
-			Entry<Integer, String> entry2 = itr2.next();
-			System.out.println(entry1.equals(entry2));
-		}
+
 	}
 
 }

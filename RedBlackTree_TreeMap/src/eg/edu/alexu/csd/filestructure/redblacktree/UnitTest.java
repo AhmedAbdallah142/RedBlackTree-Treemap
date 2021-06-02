@@ -1288,7 +1288,7 @@ public class UnitTest {
 				}
 			});
 			for (int i = 0; i < ans.size(); i++) 
-				Assert.assertEquals(ans.get(i), realAns.get(i));
+				Assert.assertEquals(realAns.get(i), ans.get(i));
 		} catch (Throwable e) {
  			TestRunner.fail("Fail in headMap", e);
 		}
