@@ -20,6 +20,7 @@ import java.util.TreeMap;
 
 import javax.management.RuntimeErrorException;
 
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,8 +33,10 @@ public class UnitTest {
 	 */
 	@Test
 	public void testRootNull() {
+
 		IRedBlackTree<String, String> redBlackTree = (IRedBlackTree<String, String>) TestRunner.getImplementationInstanceForInterface(IRedBlackTree.class);
 		INode<String, String> root = null;
+
 		try {
 			root = redBlackTree.getRoot();
 			if (debug)
@@ -947,7 +950,7 @@ public class UnitTest {
 			while(itr1.hasNext() && itr2.hasNext()) {
 				Entry<Integer, String> entry1 = itr1.next();
 				Entry<Integer, String> entry2 = itr2.next();
-				Assert.assertEquals(entry2, entry1);
+				Assert.assertEquals(entry1, entry2);
 				
 			}	
 		} catch (Throwable e) {
@@ -1288,7 +1291,7 @@ public class UnitTest {
 				}
 			});
 			for (int i = 0; i < ans.size(); i++) 
-				Assert.assertEquals(realAns.get(i), ans.get(i));
+				Assert.assertEquals(ans.get(i), realAns.get(i));
 		} catch (Throwable e) {
  			TestRunner.fail("Fail in headMap", e);
 		}
@@ -1338,9 +1341,8 @@ public class UnitTest {
 					return o1.getKey() - o2.getKey();
 				}
 			});
-			for (int i = 0; i < ans.size(); i++) {
-				Assert.assertEquals(realAns.get(i), ans.get(i));
-			}	
+			for (int i = 0; i < ans.size(); i++) 
+				Assert.assertEquals(ans.get(i), realAns.get(i));
 		} catch (Throwable e) {
  			TestRunner.fail("Fail in headMap", e);
 		}

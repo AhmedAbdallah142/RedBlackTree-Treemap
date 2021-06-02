@@ -9,99 +9,77 @@ import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
-	/*class entry implements Entry<T, V> {
-		T key;
-		V value;
-
-		entry(INode<T,V> node) {
-			this.key = node.getKey();
-			this.value = node.getValue();
-		}
-		entry(T key,V value) {
-			this.key = key;
-			this.value = value;
-		}
-
-		@Override
-		public T getKey() {
-			return key;
-		}
-
-		@Override
-		public V getValue() {
-			return value;
-		}
-
-		@Override
-		public V setValue(V value) {
-			this.value = value;
-			return value;
-		}
-
-		@Override
-		public String toString() {
-			return key+"="+value;
-		}
-
-	};*/
+	/*
+	 * class entry implements Entry<T, V> { T key; V value;
+	 * 
+	 * entry(INode<T,V> node) { this.key = node.getKey(); this.value =
+	 * node.getValue(); } entry(T key,V value) { this.key = key; this.value = value;
+	 * }
+	 * 
+	 * @Override public T getKey() { return key; }
+	 * 
+	 * @Override public V getValue() { return value; }
+	 * 
+	 * @Override public V setValue(V value) { this.value = value; return value; }
+	 * 
+	 * @Override public String toString() { return key+"="+value; }
+	 * 
+	 * };
+	 */
 	Comparator<Entry<T, V>> keyComparator = new Comparator<Entry<T, V>>() {
 		@Override
 		public int compare(Entry<T, V> o1, Entry<T, V> o2) {
 			return o1.getKey().compareTo(o2.getKey());
 		}
 	};
-	Set<Entry<T, V>> Entryset = new TreeSet<Entry<T, V>>(keyComparator);
+	Set<Entry<T, V>> Entryset;
+	Set<T> keyset;
 	RedBlackTree<T, V> tree;
+
 	public TreeMap() {
 		tree = new RedBlackTree<>();
+		Entryset = new TreeSet<Entry<T, V>>(keyComparator);
+		keyset = new TreeSet<T>();
 	}
 
-	/*ArrayList<INode<T, V>> treeNodes = new ArrayList<INode<T, V>>();
-
-	int lower_bound(T key) {
-		int mid;
-		int low = 0;
-		int high = treeNodes.size();
-		while (low < high) {
-			mid = low + (high - low) / 2;
-
-			if (key.compareTo(treeNodes.get(mid).getKey()) <= 0) {
-				high = mid;
-			} else {
-				low = mid + 1;
-			}
-		}
-
-		if (low < treeNodes.size() && (treeNodes.get(low).getKey().compareTo(key) < 0)) {
-			low++;
-		}
-
-		return low;
-	}*/
+	/*
+	 * ArrayList<INode<T, V>> treeNodes = new ArrayList<INode<T, V>>();
+	 * 
+	 * int lower_bound(T key) { int mid; int low = 0; int high = treeNodes.size();
+	 * while (low < high) { mid = low + (high - low) / 2;
+	 * 
+	 * if (key.compareTo(treeNodes.get(mid).getKey()) <= 0) { high = mid; } else {
+	 * low = mid + 1; } }
+	 * 
+	 * if (low < treeNodes.size() && (treeNodes.get(low).getKey().compareTo(key) <
+	 * 0)) { low++; }
+	 * 
+	 * return low; }
+	 */
 	@Override
 	public Entry<T, V> ceilingEntry(T key) {
-		if (key==null)
+		if (key == null)
 			throw new RuntimeErrorException(null);
 		if (!tree.isEmpty()) {
 			INode<T, V> temp = tree.getRoot();
 			INode<T, V> Parent = null;
 			while (!temp.isNull()) {
 				if (temp.getKey().compareTo(key) < 0) {
-					if ((Parent!=null)&&(temp.getRightChild().isNull())) {
-						return new AbstractMap.SimpleEntry<T,V>(Parent.getKey(), Parent.getValue());
+					if ((Parent != null) && (temp.getRightChild().isNull())) {
+						return new AbstractMap.SimpleEntry<T, V>(Parent.getKey(), Parent.getValue());
 					}
 					temp = temp.getRightChild();
-					} else if (temp.getKey().compareTo(key) == 0) {
-						return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
-					} else {
-						if (temp.getLeftChild().isNull()) {
-							return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
-						}
-						Parent = temp;
-						temp = temp.getLeftChild();
-						}
+				} else if (temp.getKey().compareTo(key) == 0) {
+					return new AbstractMap.SimpleEntry<T, V>(temp.getKey(), temp.getValue());
+				} else {
+					if (temp.getLeftChild().isNull()) {
+						return new AbstractMap.SimpleEntry<T, V>(temp.getKey(), temp.getValue());
 					}
+					Parent = temp;
+					temp = temp.getLeftChild();
+				}
 			}
+		}
 
 		return null;
 	}
@@ -119,22 +97,27 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	@Override
 	public void clear() {
 		tree = new RedBlackTree<T, V>();
-		Entryset = new TreeSet<Map.Entry<T,V>>(keyComparator);
+		Entryset = new TreeSet<Map.Entry<T, V>>(keyComparator);
+		keyset = new TreeSet<T>();
 	}
 
 	@Override
 	public boolean containsKey(T key) {
-		Entry<T,V> curr = ceilingEntry(key);
-		if (curr == null) { return false; }
-		else if (key.compareTo(curr.getKey()) == 0) { return true; }
-		else { return false; }
+		Entry<T, V> curr = ceilingEntry(key);
+		if (curr == null) {
+			return false;
+		} else if (key.compareTo(curr.getKey()) == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
-		if (value==null)
+		if (value == null)
 			throw new RuntimeErrorException(null);
-		if (tree.getRoot()==null || tree.getRoot().isNull())
+		if (tree.getRoot() == null || tree.getRoot().isNull())
 			return false;
 
 		Stack<INode<T, V>> s = new Stack<INode<T, V>>();
@@ -158,7 +141,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return false;
 	}
 
-
 	@Override
 	public Set<Entry<T, V>> entrySet() {
 		return Entryset;
@@ -175,7 +157,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 				root = root.getLeftChild();
 				child = child.getLeftChild();
 			}
-			return new AbstractMap.SimpleEntry<T,V>(root.getKey(), root.getValue());
+			return new AbstractMap.SimpleEntry<T, V>(root.getKey(), root.getValue());
 		}
 	}
 
@@ -191,22 +173,22 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Entry<T, V> floorEntry(T key) {
-		if (key==null)
+		if (key == null)
 			throw new RuntimeErrorException(null);
 		if (!tree.isEmpty()) {
 			INode<T, V> temp = tree.getRoot();
 			INode<T, V> Parent = null;
 			while (!temp.isNull()) {
 				if (temp.getKey().compareTo(key) > 0) {
-					if ((Parent!=null)&&(temp.getLeftChild().isNull())) {
-						return new AbstractMap.SimpleEntry<T,V>(Parent.getKey(), Parent.getValue());
+					if ((Parent != null) && (temp.getLeftChild().isNull())) {
+						return new AbstractMap.SimpleEntry<T, V>(Parent.getKey(), Parent.getValue());
 					}
 					temp = temp.getLeftChild();
 				} else if (temp.getKey().compareTo(key) == 0) {
-					return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
+					return new AbstractMap.SimpleEntry<T, V>(temp.getKey(), temp.getValue());
 				} else {
 					if (temp.getRightChild().isNull()) {
-						return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
+						return new AbstractMap.SimpleEntry<T, V>(temp.getKey(), temp.getValue());
 					}
 					Parent = temp;
 					temp = temp.getRightChild();
@@ -221,7 +203,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		Entry<T, V> temp = floorEntry(key);
 		if (temp == null)
 			return null;
-		return (T) temp.getKey();
+		return temp.getKey();
 	}
 
 	@Override
@@ -231,7 +213,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public ArrayList<Entry<T, V>> headMap(T toKey) {
-		if (toKey==null)
+		if (toKey == null)
 			throw new RuntimeErrorException(null);
 		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, false, tree.getRoot(), Nodes);
@@ -250,19 +232,20 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			return;
 		headMapHelper(toKey, inclusive, temp.getLeftChild(), nodes);
 		if (temp.getKey().compareTo(toKey) < 0) {
-			nodes.add(new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue()));
+			nodes.add(new AbstractMap.SimpleEntry<T, V>(temp.getKey(), temp.getValue()));
 			headMapHelper(toKey, inclusive, temp.getRightChild(), nodes);
 		} else if (temp.getKey().compareTo(toKey) == 0) {
 			if (inclusive)
-				nodes.add(new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue()));
+				nodes.add(new AbstractMap.SimpleEntry<T, V>(temp.getKey(), temp.getValue()));
 		}
 	}
 
 	@Override
 	public Set<T> keySet() {
-		Set<T> set = new TreeSet<T>();
+		/*Set<T> set = new TreeSet<T>();
 		keySetHelper(tree.getRoot(), set);
-		return set;
+		return set;*/
+		return keyset;
 	}
 
 	private void keySetHelper(INode<T, V> root, Set<T> set) {
@@ -280,7 +263,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		INode<T, V> temp = tree.getRoot();
 		while (!temp.isNull()) {
 			if (temp.getRightChild().isNull())
-				return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
+				return new AbstractMap.SimpleEntry<T, V>(temp.getKey(), temp.getValue());
 			temp = temp.getRightChild();
 		}
 		return null;
@@ -291,7 +274,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		Entry<T, V> temp = lastEntry();
 		if (temp == null)
 			return null;
-		return (T) temp.getKey();
+		return temp.getKey();
 	}
 
 	@Override
@@ -300,77 +283,80 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			return null;
 		}
 		Entry<T, V> temp = firstEntry();
-		if(temp != null) {
-			Entryset.remove(temp); }
+		if (temp != null) {
+			Entryset.remove(temp);
+			keyset.remove(temp.getKey());
+		}
 		tree.delete(temp.getKey());
 		return temp;
 	}
 
 	@Override
-	public Entry<T, V> pollLastEntry()  {
+	public Entry<T, V> pollLastEntry() {
 		if (size() == 0) {
 			return null;
 		}
 		Entry<T, V> temp = lastEntry();
-		if(temp != null) {
-			Entryset.remove(temp); }
+		if (temp != null) {
+			Entryset.remove(temp);
+			keyset.remove(temp.getKey());
+		}
 		tree.delete(temp.getKey());
 		return temp;
 	}
 
 	@Override
 	public void put(T key, V value) {
-		if(containsKey(key)) {
+		if (containsKey(key)) {
 			V val = tree.search(key);
-			Entryset.remove(new AbstractMap.SimpleEntry<T,V>(key, val));
-			Entryset.add(new AbstractMap.SimpleEntry<T,V>(key, value));
-		}else {
-			Entryset.add(new AbstractMap.SimpleEntry<T,V>(key, value));
+			Entryset.remove(new AbstractMap.SimpleEntry<T, V>(key, val));
+			Entryset.add(new AbstractMap.SimpleEntry<T, V>(key, value));
+		} else {
+			Entryset.add(new AbstractMap.SimpleEntry<T, V>(key, value));
+			keyset.add(key);
 		}
 		tree.insert(key, value);
 	}
 
 	@Override
 	public void putAll(Map<T, V> map) {
-		if (map==null)
+		if (map == null)
 			throw new RuntimeErrorException(null);
 		tree = new RedBlackTree<T, V>();
-		/*T [] key = (T[]) map.keySet().toArray();
-		V [] val = (V[]) map.values().toArray();
-		for (int i=0 ; i< map.size() ; i++){
-			tree.insert(key[i] , val[i]);
-		}*/
-		for ( Map.Entry<T, V> entry : map.entrySet()) {
+		/*
+		 * T [] key = (T[]) map.keySet().toArray(); V [] val = (V[])
+		 * map.values().toArray(); for (int i=0 ; i< map.size() ; i++){
+		 * tree.insert(key[i] , val[i]); }
+		 */
+		for (Map.Entry<T, V> entry : map.entrySet()) {
 			T key = entry.getKey();
 			V val = entry.getValue();
-			if(containsKey(key)) {
+			if (containsKey(key)) {
 				V value = tree.search(key);
-				Entryset.remove(new AbstractMap.SimpleEntry<T,V>(key, value));
-				Entryset.add(new AbstractMap.SimpleEntry<T,V>(key, val));
-			}else {
-				Entryset.add(new AbstractMap.SimpleEntry<T,V>(key, val));
+				Entryset.remove(new AbstractMap.SimpleEntry<T, V>(key, value));
+				Entryset.add(new AbstractMap.SimpleEntry<T, V>(key, val));
+			} else {
+				Entryset.add(new AbstractMap.SimpleEntry<T, V>(key, val));
+				keyset.add(key);
 			}
-			tree.insert(key,val);
+			tree.insert(key, val);
 		}
 	}
 
-	/*public void inOrder(INode<T, V> node, Map<T, V> map) {
-		if (node.isNull()) {
-			return;
-		}
-		inOrder(node.getLeftChild(), map);
-		map.put(node.getKey(), node.getValue());
-		inOrder(node.getRightChild(), map);
-	}
-	}*/
+	/*
+	 * public void inOrder(INode<T, V> node, Map<T, V> map) { if (node.isNull()) {
+	 * return; } inOrder(node.getLeftChild(), map); map.put(node.getKey(),
+	 * node.getValue()); inOrder(node.getRightChild(), map); } }
+	 */
 
 	@Override
 	public boolean remove(T key) {
-		if (key==null)
+		if (key == null)
 			throw new RuntimeErrorException(null);
-		if(containsKey(key)) {
+		if (containsKey(key)) {
 			V val = tree.search(key);
-			Entryset.remove(new AbstractMap.SimpleEntry<T,V>(key, val));
+			Entryset.remove(new AbstractMap.SimpleEntry<T, V>(key, val));
+			keyset.remove(key);
 		}
 		return tree.delete(key);
 	}
@@ -396,10 +382,9 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		return arrayList;
 	}
 
-
 	@Override
 	public String toString() {
-		return "TreeMap [tree=" + tree +  "]";
+		return "TreeMap [tree=" + tree + "]";
 	}
 
 	public static void main(String[] args) {
@@ -415,8 +400,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree.put(8, "Fax");
 		tree.remove(5);
 		tree.put(4, "Faxawy4");
-		//tree.put(10, "fax");
-
+		// tree.put(10, "fax");
 
 		java.util.TreeMap<Integer, String> tree1 = new java.util.TreeMap<Integer, String>();
 
@@ -430,95 +414,67 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(8, "Fax");
 		tree1.remove(5);
 		tree1.put(4, "Faxawy");
-		//tree1.put(10, "fax");
-		
+		// tree1.put(10, "fax");
+
 		// Ahmed Ashraf tests
-		/*System.out.println(tree.ceilingEntry(3));
-		System.out.println(tree1.ceilingEntry(3));
-		System.out.println(tree.ceilingEntry(4));
-		System.out.println(tree1.ceilingEntry(4));
-		System.out.println(tree.ceilingKey(3));
-		System.out.println(tree1.ceilingKey(3));
-		System.out.println(tree.ceilingKey(0));
-		System.out.println(tree1.ceilingKey(0));
-		System.out.println(tree.containsKey(3));
-		System.out.println(tree1.containsKey(3));
-		System.out.println(tree.containsKey(13));
-		System.out.println(tree1.containsKey(13));
-		/*System.out.println(tree.containsValue("Mark"));
-		System.out.println(tree1.containsValue("Mark"));
-		System.out.println(tree.containsValue("zoo"));
-		System.out.println(tree1.containsValue("zoo"));
-		System.out.println(tree.entrySet());
-		System.out.println(tree1.entrySet());
-		/*System.out.println(tree.firstEntry());
-		System.out.println(tree1.firstEntry());
-		System.out.println(tree.firstKey());
-		System.out.println(tree1.firstKey());
-		//tree.clear();
-		//tree1.clear();
-		System.out.println(tree.size());
-		System.out.println(tree1.size());
-		
-		
-		// Ahmed Abdallah tests
-		System.out.println(tree.floorEntry(9));
-		System.out.println(tree1.floorEntry(9));
-		System.out.println(tree.floorEntry(2));
-		System.out.println(tree1.floorEntry(2));
-		System.out.println(tree.floorKey(0));
-		System.out.println(tree1.floorKey(0));
-		System.out.println(tree.floorKey(12));
-		System.out.println(tree1.floorKey(12));
-		System.out.println(tree.get(0));
-		System.out.println(tree1.get(0));
-		System.out.println(tree.get(8));
-		System.out.println(tree1.get(8));
-		System.out.println(tree.headMap(0));
-		System.out.println(tree1.headMap(0));
-		System.out.println(tree.headMap(8));
-		System.out.println(tree1.headMap(8));
-		System.out.println(tree.headMap(0,true));
-		System.out.println(tree1.headMap(0,true));
-		System.out.println(tree.headMap(8,true));
-		System.out.println(tree1.headMap(8,true));
-		System.out.println(tree.keySet());
-		System.out.println(tree1.keySet());
-		System.out.println(tree.lastEntry());
-		System.out.println(tree1.lastEntry());
-		System.out.println(tree.lastKey());
-		System.out.println(tree1.lastKey());*/
-		//Mark Test
-		/*//17
-		System.out.println(tree1.pollFirstEntry());
-		System.out.println(tree.pollFirstEntry());
-		//18
-		System.out.println(tree1.pollLastEntry());
-		System.out.println(tree.pollLastEntry());
-		//19
-		in main
-		//20
-		/*Map<Integer, String> map = new HashMap<>();
-		map.put(1,"mark100");
-		map.put(5,"mark500");
-		map.put(2,"mark200");
-		map.put(6,"mark600");
-		tree.putAll(map);
-		System.out.println(tree.entrySet());
-		//21
-		System.out.println(tree.remove(1));
-		System.out.println(tree1.remove(1));
-		System.out.println(tree.entrySet());
-		System.out.println(tree1.entrySet());
-		//22
-		System.out.println(tree.size());
-		System.out.println(tree1.size());
-		//23
-		System.out.println(tree.values());
-		System.out.println(tree1.values());*/
-		
-		
-		
+		/*
+		 * System.out.println(tree.ceilingEntry(3));
+		 * System.out.println(tree1.ceilingEntry(3));
+		 * System.out.println(tree.ceilingEntry(4));
+		 * System.out.println(tree1.ceilingEntry(4));
+		 * System.out.println(tree.ceilingKey(3));
+		 * System.out.println(tree1.ceilingKey(3));
+		 * System.out.println(tree.ceilingKey(0));
+		 * System.out.println(tree1.ceilingKey(0));
+		 * System.out.println(tree.containsKey(3));
+		 * System.out.println(tree1.containsKey(3));
+		 * System.out.println(tree.containsKey(13));
+		 * System.out.println(tree1.containsKey(13));
+		 * /*System.out.println(tree.containsValue("Mark"));
+		 * System.out.println(tree1.containsValue("Mark"));
+		 * System.out.println(tree.containsValue("zoo"));
+		 * System.out.println(tree1.containsValue("zoo"));
+		 * System.out.println(tree.entrySet()); System.out.println(tree1.entrySet());
+		 * /*System.out.println(tree.firstEntry());
+		 * System.out.println(tree1.firstEntry()); System.out.println(tree.firstKey());
+		 * System.out.println(tree1.firstKey()); //tree.clear(); //tree1.clear();
+		 * System.out.println(tree.size()); System.out.println(tree1.size());
+		 * 
+		 * 
+		 * // Ahmed Abdallah tests System.out.println(tree.floorEntry(9));
+		 * System.out.println(tree1.floorEntry(9));
+		 * System.out.println(tree.floorEntry(2));
+		 * System.out.println(tree1.floorEntry(2));
+		 * System.out.println(tree.floorKey(0)); System.out.println(tree1.floorKey(0));
+		 * System.out.println(tree.floorKey(12));
+		 * System.out.println(tree1.floorKey(12)); System.out.println(tree.get(0));
+		 * System.out.println(tree1.get(0)); System.out.println(tree.get(8));
+		 * System.out.println(tree1.get(8)); System.out.println(tree.headMap(0));
+		 * System.out.println(tree1.headMap(0)); System.out.println(tree.headMap(8));
+		 * System.out.println(tree1.headMap(8));
+		 * System.out.println(tree.headMap(0,true));
+		 * System.out.println(tree1.headMap(0,true));
+		 * System.out.println(tree.headMap(8,true));
+		 * System.out.println(tree1.headMap(8,true)); System.out.println(tree.keySet());
+		 * System.out.println(tree1.keySet()); System.out.println(tree.lastEntry());
+		 * System.out.println(tree1.lastEntry()); System.out.println(tree.lastKey());
+		 * System.out.println(tree1.lastKey());
+		 */
+		// Mark Test
+		/*
+		 * //17 System.out.println(tree1.pollFirstEntry());
+		 * System.out.println(tree.pollFirstEntry()); //18
+		 * System.out.println(tree1.pollLastEntry());
+		 * System.out.println(tree.pollLastEntry()); //19 in main //20 /*Map<Integer,
+		 * String> map = new HashMap<>(); map.put(1,"mark100"); map.put(5,"mark500");
+		 * map.put(2,"mark200"); map.put(6,"mark600"); tree.putAll(map);
+		 * System.out.println(tree.entrySet()); //21 System.out.println(tree.remove(1));
+		 * System.out.println(tree1.remove(1)); System.out.println(tree.entrySet());
+		 * System.out.println(tree1.entrySet()); //22 System.out.println(tree.size());
+		 * System.out.println(tree1.size()); //23 System.out.println(tree.values());
+		 * System.out.println(tree1.values());
+		 */
+
 	}
 
 }
