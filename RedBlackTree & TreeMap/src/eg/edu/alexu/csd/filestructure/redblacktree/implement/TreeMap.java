@@ -211,22 +211,24 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Entry<T, V> floorEntry(T key) {
-		INode<T, V> temp = tree.getRoot();
-		INode<T, V> Parent = null;
-		while (!temp.isNull()) {
-			if (temp.getKey().compareTo(key) > 0) {
-				if ((Parent!=null)&&(temp.getLeftChild().isNull())) {
-					return new entry(Parent);
-				}
-				temp = temp.getLeftChild();
-			} else if (temp.getKey().compareTo(key) == 0) {
-				return new entry(temp);
-			} else {
-				if (temp.getRightChild().isNull()) {
+		if (!tree.isEmpty()) {
+			INode<T, V> temp = tree.getRoot();
+			INode<T, V> Parent = null;
+			while (!temp.isNull()) {
+				if (temp.getKey().compareTo(key) > 0) {
+					if ((Parent!=null)&&(temp.getLeftChild().isNull())) {
+						return new entry(Parent);
+					}
+					temp = temp.getLeftChild();
+				} else if (temp.getKey().compareTo(key) == 0) {
 					return new entry(temp);
+				} else {
+					if (temp.getRightChild().isNull()) {
+						return new entry(temp);
+					}
+					Parent = temp;
+					temp = temp.getRightChild();
 				}
-				Parent = temp;
-				temp = temp.getRightChild();
 			}
 		}
 		return null;
@@ -383,14 +385,14 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	public static void main(String[] args) {
 		TreeMap<Integer, String> tree = new TreeMap<Integer, String>();
-		tree.put(1, "Mark1");
+		/*tree.put(1, "Mark1");
 		tree.put(2, "Faxawy2");
 		tree.put(3, "Mark3");
 		tree.put(5, "Mark5");
 		tree.put(6, "Faxawy6");
 		tree.put(7, "Mark");
 		tree.put(8, "Faxawy8");
-		tree.put(4, "Faxawy4");
+		tree.put(4, "Faxawy4");*/
 		//tree.put(10, "fax");
 
 
@@ -407,7 +409,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		//tree1.put(10, "fax");
 		
 		
-		// Ahmed Ashraf tests
+		/*// Ahmed Ashraf tests
 		System.out.println(tree.ceilingEntry(9));
 		System.out.println(tree1.ceilingEntry(9));
 		System.out.println(tree.ceilingEntry(4));
@@ -432,12 +434,12 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		System.out.println(tree1.firstKey());
 		/*System.out.println(tree.clear());
 		System.out.println(tree1.clear());*/
-		tree.clear();
-		tree1.clear();
+		//tree.clear();
+		//tree1.clear();
 		System.out.println(tree.size());
 		System.out.println(tree1.size());
 		
-		/*
+		
 		// Ahmed Abdallah tests
 		System.out.println(tree.floorEntry(9));
 		System.out.println(tree1.floorEntry(9));
@@ -464,7 +466,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		System.out.println(tree.lastEntry());
 		System.out.println(tree1.lastEntry());
 		System.out.println(tree.lastKey());
-		System.out.println(tree1.lastKey());*/
+		System.out.println(tree1.lastKey());
 	}
 
 }

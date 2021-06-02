@@ -16,6 +16,8 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public INode<T, V> getRoot() {
+		if (isEmpty())
+			return nill;
 		return this.root;
 	}
 
@@ -31,7 +33,7 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public V search(T key) {
-		if(root==null) {
+		if (isEmpty()) {
 			return null;
 		}
 		INode<T, V> curr = this.root;
