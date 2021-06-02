@@ -39,7 +39,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		public String toString() {
 			return "entry [key=" + key + ", value=" + value + "]";
 		}
-		
+
 	};
 
 	int treeSize;
@@ -176,7 +176,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 				return o1.getKey().compareTo(o2.getKey());
 			}
 		};
-		//Set<INode<T, V>> set = new TreeSet<INode<T, V>>(keyComparator);
+		// Set<INode<T, V>> set = new TreeSet<INode<T, V>>(keyComparator);
 		Set<Entry<T, V>> set = new TreeSet<Entry<T, V>>(keyComparator);
 		if (tree.isEmpty())
 			return null;
@@ -231,7 +231,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		INode<T, V> Parent = null;
 		while (!temp.isNull()) {
 			if (temp.getKey().compareTo(key) > 0) {
-				if (!Parent.isNull()) {
+				if ((Parent!=null)&&(temp.getLeftChild().isNull())) {
 					return new entry(Parent.getKey(), Parent.getValue());
 				}
 				temp = temp.getLeftChild();
@@ -262,14 +262,14 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public ArrayList<Entry<T,V>> headMap(T toKey) {
+	public ArrayList<Entry<T, V>> headMap(T toKey) {
 		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, false, tree.getRoot(), Nodes);
 		return Nodes;
 	}
 
 	@Override
-	public ArrayList<Entry<T,V>> headMap(T toKey, boolean inclusive) {
+	public ArrayList<Entry<T, V>> headMap(T toKey, boolean inclusive) {
 		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, inclusive, tree.getRoot(), Nodes);
 		return Nodes;
@@ -280,11 +280,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			return;
 		headMapHelper(toKey, inclusive, temp.getLeftChild(), nodes);
 		if (temp.getKey().compareTo(toKey) < 0) {
-			nodes.add(new entry(temp.getKey(),temp.getValue()));
+			nodes.add(new entry(temp.getKey(), temp.getValue()));
 			headMapHelper(toKey, inclusive, temp.getRightChild(), nodes);
 		} else if (temp.getKey().compareTo(toKey) == 0) {
 			if (inclusive)
-				nodes.add(new entry(temp.getKey(),temp.getValue()));
+				nodes.add(new entry(temp.getKey(), temp.getValue()));
 		}
 	}
 
@@ -308,7 +308,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		INode<T, V> temp = tree.getRoot();
 		while (!temp.isNull()) {
 			if (temp.getRightChild().isNull())
-				return new entry(temp.getKey(),temp.getValue());
+				return new entry(temp.getKey(), temp.getValue());
 			temp = temp.getRightChild();
 		}
 		return null;
@@ -323,7 +323,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public Entry<T,V> pollFirstEntry() {
+	public Entry<T, V> pollFirstEntry() {
 		if (size() == 0) {
 			return null;
 		}
@@ -333,7 +333,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	@Override
-	public Entry<T,V> pollLastEntry() {
+	public Entry<T, V> pollLastEntry() {
 		if (size() == 0) {
 			return null;
 		}
@@ -407,19 +407,23 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree.put(7, "Mark7");
 		tree.put(8, "Faxawy8");
 		tree.put(4, "Faxawy4");
-		// tree.ceilingEntry(7);
+
 
 		java.util.TreeMap<Integer, String> tree1 = new java.util.TreeMap<Integer, String>();
-		/*
-		 * tree1.put(1,"Mark"); tree1.put(2, "Faxawy"); tree1.put(3,"Mark");
-		 * tree1.put(4, "Faxawy"); tree1.put(5,"Mark"); tree1.put(6, "Faxawy");
-		 * tree1.put(7,"Mark"); tree1.put(8, "Faxawy"); //System.out.println(tree1);
-		 */
-		tree.putAll(tree1);
-		// System.out.println(tree.keySet());
-		System.out.println(tree.entrySet());
-		// System.out.println(tree1.lastEntry());
-		// System.out.println(tree.pollFirstEntry());
+
+		tree1.put(1, "Mark");
+		tree1.put(2, "Faxawy");
+		tree1.put(3, "Mark");
+		tree1.put(5, "Mark");
+		tree1.put(6, "Faxawy");
+		tree1.put(7, "Mark");
+		tree1.put(8, "Faxawy");
+		tree1.put(4, "Faxawy");
+		
+		System.out.println(tree.floorEntry(9));
+		System.out.println(tree1.floorEntry(9));
+		System.out.println(tree.floorEntry(2));
+		System.out.println(tree1.floorEntry(2));
 	}
 
 }
