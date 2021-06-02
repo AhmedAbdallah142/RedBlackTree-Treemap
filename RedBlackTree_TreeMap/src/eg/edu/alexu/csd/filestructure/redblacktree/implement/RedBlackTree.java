@@ -142,7 +142,10 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 	@Override
 	public boolean delete(T key) {
 		if(key == null) throw new RuntimeErrorException(null, "Error, null key");
-		return deletNode(root, key);
+		boolean check = deletNode(root, key);
+		if (root.isNull())
+			root = null;
+		return check;
 	}
 
 	private boolean deletNode(INode<T, V> node, T key) {
