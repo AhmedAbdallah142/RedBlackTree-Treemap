@@ -947,7 +947,7 @@ public class UnitTest {
 			while(itr1.hasNext() && itr2.hasNext()) {
 				Entry<Integer, String> entry1 = itr1.next();
 				Entry<Integer, String> entry2 = itr2.next();
-				Assert.assertEquals(entry1, entry2);
+				Assert.assertEquals(entry2, entry1);
 				
 			}	
 		} catch (Throwable e) {
@@ -1338,8 +1338,13 @@ public class UnitTest {
 					return o1.getKey() - o2.getKey();
 				}
 			});
-			for (int i = 0; i < ans.size(); i++) 
-				Assert.assertEquals(ans.get(i), realAns.get(i));
+			for (int i = 0; i < ans.size(); i++) {
+				String S1 = realAns.get(i).toString();
+				String S2 = ans.get(i).toString();
+				System.out.println(S1);
+				System.out.println(S2);
+				Assert.assertEquals(realAns.get(i), ans.get(i));
+			}	
 		} catch (Throwable e) {
  			TestRunner.fail("Fail in headMap", e);
 		}

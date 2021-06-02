@@ -5,13 +5,15 @@ import java.util.Map.Entry;
 
 import javax.management.RuntimeErrorException;
 
+import org.junit.Assert;
+
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	RedBlackTree<T, V> tree;
-
+	
 	class entry implements Entry<T, V> {
 		T key;
 		V value;
@@ -39,7 +41,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 		@Override
 		public String toString() {
-			return "entry [key=" + key + ", value=" + value + "]";
+			return key+"="+value;
 		}
 
 	};
@@ -76,6 +78,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Entry<T, V> ceilingEntry(T key) {
+		if (key==null)
+			throw new RuntimeErrorException(null);
 		if (tree.isEmpty())
 			return null;
 		Stack<INode<T, V>> s = new Stack<INode<T, V>>();
@@ -91,7 +95,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			curr = s.pop();
 
 			if (curr.getKey().compareTo(key) >= 0) {
-				return new entry( curr);
+				return (Map.Entry<T, V>)new entry(curr);
 			}
 			curr = curr.getRightChild();
 		}
@@ -138,6 +142,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public boolean containsValue(Object value) {
+		if (value==null)
+			throw new RuntimeErrorException(null);
 		if (tree.getRoot()==null || tree.getRoot().isNull())
 			return false;
 
@@ -276,11 +282,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			return;
 		headMapHelper(toKey, inclusive, temp.getLeftChild(), nodes);
 		if (temp.getKey().compareTo(toKey) < 0) {
-			nodes.add(new entry(temp));
+			nodes.add((Map.Entry<T, V>)new entry(temp));
 			headMapHelper(toKey, inclusive, temp.getRightChild(), nodes);
 		} else if (temp.getKey().compareTo(toKey) == 0) {
 			if (inclusive)
-				nodes.add(new entry(temp));
+				nodes.add((Map.Entry<T, V>)new entry(temp));
 		}
 	}
 
@@ -410,7 +416,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	}
 
 	public static void main(String[] args) {
-		TreeMap<Integer, String> tree = new TreeMap<Integer, String>();
+		/*TreeMap<Integer, String> tree = new TreeMap<Integer, String>();
 		tree.lastEntry();
 		tree.put(1, "Mark1");
 		tree.put(2, "Faxawy2");
@@ -490,7 +496,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		System.out.println(tree.lastEntry());
 		System.out.println(tree1.lastEntry());
 		System.out.println(tree.lastKey());
-		System.out.println(tree1.lastKey());
+		System.out.println(tree1.lastKey());*/
 		//Mark Test
 		/*//17
 		System.out.println(tree1.pollFirstEntry());
@@ -519,6 +525,22 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		//23
 		System.out.println(tree.values());
 		System.out.println(tree1.values());*/
+		TreeMap<Integer, String> treemap = new TreeMap<>();
+		java.util.TreeMap<Integer, String> t = new java.util.TreeMap<>();
+		Random r = new Random();
+		for (int i = 0; i < 1000; i++) {
+			int key = r.nextInt(10000);
+			t.put(key, "soso" + key);
+			treemap.put(key, "soso" + key);
+		}
+		Iterator<Entry<Integer, String>> itr1 = treemap.entrySet().iterator();
+		Iterator<Entry<Integer, String>> itr2 = t.entrySet().iterator();
+		
+		while(itr1.hasNext() && itr2.hasNext()) {
+			Entry<Integer, String> entry1 = itr1.next();
+			Entry<Integer, String> entry2 = itr2.next();
+			System.out.println(entry1.equals(entry2));
+		}
 	}
 
 }
