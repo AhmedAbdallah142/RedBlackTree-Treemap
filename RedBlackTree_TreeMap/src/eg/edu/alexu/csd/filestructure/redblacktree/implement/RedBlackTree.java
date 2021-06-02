@@ -63,7 +63,7 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 		/*** insert in suitable place like any BST ***/
 		
 		// if root is null, easy
-		if (root == null) {
+		if (root == null || root == nill) {
 			root = new Node<T, V>(key, value, null);
 			root.setColor(false);
 			root.setLeftChild(nill);
