@@ -190,8 +190,10 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			return null;
 		} else {
 			INode<T, V> root = tree.getRoot();
-			while (!root.isNull()) {
+			INode<T, V> child = root.getLeftChild();
+			while (!child.isNull()) {
 				root = root.getLeftChild();
+				child = child.getLeftChild();
 			}
 			return new entry(root);
 		}
@@ -386,9 +388,10 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree.put(3, "Mark3");
 		tree.put(5, "Mark5");
 		tree.put(6, "Faxawy6");
-		tree.put(7, "Mark7");
+		tree.put(7, "Mark");
 		tree.put(8, "Faxawy8");
 		tree.put(4, "Faxawy4");
+		//tree.put(10, "fax");
 
 
 		java.util.TreeMap<Integer, String> tree1 = new java.util.TreeMap<Integer, String>();
@@ -401,9 +404,38 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(7, "Mark");
 		tree1.put(8, "Faxawy");
 		tree1.put(4, "Faxawy");
+		//tree1.put(10, "fax");
 		
 		
+		// Ahmed Ashraf tests
+		System.out.println(tree.ceilingEntry(9));
+		System.out.println(tree1.ceilingEntry(9));
+		System.out.println(tree.ceilingEntry(4));
+		System.out.println(tree1.ceilingEntry(4));
+		System.out.println(tree.ceilingKey(3));
+		System.out.println(tree1.ceilingKey(3));
+		System.out.println(tree.ceilingKey(9));
+		System.out.println(tree1.ceilingKey(9));
+		System.out.println(tree.containsKey(3));
+		System.out.println(tree1.containsKey(3));
+		System.out.println(tree.containsKey(13));
+		System.out.println(tree1.containsKey(13));
+		System.out.println(tree.containsValue("Mark"));
+		System.out.println(tree1.containsValue("Mark"));
+		System.out.println(tree.containsValue("zoo"));
+		System.out.println(tree1.containsValue("zoo"));
+		System.out.println(tree.entrySet());
+		System.out.println(tree1.entrySet());
+		System.out.println(tree.firstEntry());
+		System.out.println(tree1.firstEntry());
+		System.out.println(tree.firstKey());
+		System.out.println(tree1.firstKey());
+		/*System.out.println(tree.clear());
+		System.out.println(tree1.clear());*/
+		tree.clear();
+		tree1.clear();
 		
+		/*
 		// Ahmed Abdallah tests
 		System.out.println(tree.floorEntry(9));
 		System.out.println(tree1.floorEntry(9));
@@ -430,7 +462,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		System.out.println(tree.lastEntry());
 		System.out.println(tree1.lastEntry());
 		System.out.println(tree.lastKey());
-		System.out.println(tree1.lastKey());
+		System.out.println(tree1.lastKey());*/
 	}
 
 }
