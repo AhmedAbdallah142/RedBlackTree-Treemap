@@ -3,6 +3,8 @@ package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 import java.util.*;
 import java.util.Map.Entry;
 
+import javax.management.RuntimeErrorException;
+
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
@@ -215,6 +217,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Entry<T, V> floorEntry(T key) {
+		if (key==null)
+			throw new RuntimeErrorException(null);
 		if (!tree.isEmpty()) {
 			INode<T, V> temp = tree.getRoot();
 			INode<T, V> Parent = null;
@@ -295,6 +299,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Entry<T, V> lastEntry() {
+		if (tree.isEmpty())
+			return null;
 		INode<T, V> temp = tree.getRoot();
 		while (!temp.isNull()) {
 			if (temp.getRightChild().isNull())
@@ -389,6 +395,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	public static void main(String[] args) {
 		TreeMap<Integer, String> tree = new TreeMap<Integer, String>();
+		tree.lastEntry();
 		tree.put(1, "Mark1");
 		tree.put(2, "Faxawy2");
 		tree.put(3, "Mark3");
