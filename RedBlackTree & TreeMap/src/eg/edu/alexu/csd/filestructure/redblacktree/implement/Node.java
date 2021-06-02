@@ -83,7 +83,7 @@ public class Node<T extends Comparable<T>, V> implements INode<T, V> {
 
 	@Override
 	public boolean isNull() {
-		return this.key == null;
+		return this.key == null ;
 	}
 
 	@Override

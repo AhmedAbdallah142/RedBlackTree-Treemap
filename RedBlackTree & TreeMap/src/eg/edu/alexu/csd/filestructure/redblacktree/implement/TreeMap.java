@@ -127,12 +127,16 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		 * false; }else if (key.compareTo(curr.getKey()) == 0) { return true; }else {
 		 * return false; }
 		 */
-		return tree.contains(key);
+		//return tree.contains(key);
+		Entry<T,V> curr = ceilingEntry(key);
+		if (curr == null) { return false; }
+		else if (key.compareTo(curr.getKey()) == 0) { return true; }
+		else { return false; }
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
-		if (tree.getRoot().isNull())
+		if (tree.getRoot()==null || tree.getRoot().isNull())
 			return false;
 
 		Stack<INode<T, V>> s = new Stack<INode<T, V>>();
@@ -178,7 +182,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		};
 		Set<Entry<T, V>> set = new TreeSet<Entry<T, V>>(keyComparator);
 		if (tree.isEmpty())
-			return null;
+			return set;
 		INode<T, V> curr = tree.getRoot();
 		addSetInOrder(curr, set);
 		return set;
@@ -385,14 +389,14 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	public static void main(String[] args) {
 		TreeMap<Integer, String> tree = new TreeMap<Integer, String>();
-		/*tree.put(1, "Mark1");
+		tree.put(1, "Mark1");
 		tree.put(2, "Faxawy2");
 		tree.put(3, "Mark3");
 		tree.put(5, "Mark5");
 		tree.put(6, "Faxawy6");
 		tree.put(7, "Mark");
 		tree.put(8, "Faxawy8");
-		tree.put(4, "Faxawy4");*/
+		tree.put(4, "Faxawy4");
 		//tree.put(10, "fax");
 
 
@@ -408,8 +412,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(4, "Faxawy");
 		//tree1.put(10, "fax");
 		
-		
-		/*// Ahmed Ashraf tests
+		// Ahmed Ashraf tests
 		System.out.println(tree.ceilingEntry(9));
 		System.out.println(tree1.ceilingEntry(9));
 		System.out.println(tree.ceilingEntry(4));
@@ -432,8 +435,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		System.out.println(tree1.firstEntry());
 		System.out.println(tree.firstKey());
 		System.out.println(tree1.firstKey());
-		/*System.out.println(tree.clear());
-		System.out.println(tree1.clear());*/
 		//tree.clear();
 		//tree1.clear();
 		System.out.println(tree.size());
