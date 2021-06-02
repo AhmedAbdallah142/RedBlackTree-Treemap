@@ -434,6 +434,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		System.out.println(tree1.clear());*/
 		tree.clear();
 		tree1.clear();
+		System.out.println(tree.size());
+		System.out.println(tree1.size());
 		
 		/*
 		// Ahmed Abdallah tests
