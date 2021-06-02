@@ -322,21 +322,23 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Entry<T, V> pollFirstEntry() {
-		if (size() == 0) {
-			return null;
+		if (treeSize == 0) {
+			throw new RuntimeErrorException(null);
 		}
 		Entry<T, V> temp = firstEntry();
 		tree.delete(temp.getKey());
+		treeSize--;
 		return temp;
 	}
 
 	@Override
-	public Entry<T, V> pollLastEntry() {
-		if (size() == 0) {
-			return null;
+	public Entry<T, V> pollLastEntry()  {
+		if (treeSize == 0) {
+			throw new RuntimeErrorException(null);
 		}
 		Entry<T, V> temp = lastEntry();
 		tree.delete(temp.getKey());
+		treeSize--;
 		return temp;
 	}
 
