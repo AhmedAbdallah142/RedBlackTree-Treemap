@@ -252,11 +252,13 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public V get(T key) {
-		return tree.search((T) key);
+		return tree.search(key);
 	}
 
 	@Override
 	public ArrayList<Entry<T, V>> headMap(T toKey) {
+		if (toKey==null)
+			throw new RuntimeErrorException(null);
 		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, false, tree.getRoot(), Nodes);
 		return Nodes;
