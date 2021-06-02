@@ -127,12 +127,16 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		 * false; }else if (key.compareTo(curr.getKey()) == 0) { return true; }else {
 		 * return false; }
 		 */
-		return tree.contains(key);
+		//return tree.contains(key);
+		Entry<T,V> curr = ceilingEntry(key);
+		if (curr == null) { return false; }
+		else if (key.compareTo(curr.getKey()) == 0) { return true; }
+		else { return false; }
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
-		if (tree.getRoot().isNull())
+		if (tree.getRoot()==null || tree.getRoot().isNull())
 			return false;
 
 		Stack<INode<T, V>> s = new Stack<INode<T, V>>();
@@ -178,7 +182,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		};
 		Set<Entry<T, V>> set = new TreeSet<Entry<T, V>>(keyComparator);
 		if (tree.isEmpty())
-			return null;
+			return set;
 		INode<T, V> curr = tree.getRoot();
 		addSetInOrder(curr, set);
 		return set;
@@ -408,6 +412,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		
 		
 		// Ahmed Ashraf tests
+		tree.clear();
+		tree1.clear();
 		System.out.println(tree.ceilingEntry(9));
 		System.out.println(tree1.ceilingEntry(9));
 		System.out.println(tree.ceilingEntry(4));
@@ -430,8 +436,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		System.out.println(tree1.firstEntry());
 		System.out.println(tree.firstKey());
 		System.out.println(tree1.firstKey());
-		/*System.out.println(tree.clear());
-		System.out.println(tree1.clear());*/
 		tree.clear();
 		tree1.clear();
 		System.out.println(tree.size());
