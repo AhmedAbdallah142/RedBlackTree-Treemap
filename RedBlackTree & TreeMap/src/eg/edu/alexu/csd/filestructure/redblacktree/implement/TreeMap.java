@@ -213,13 +213,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		INode<T, V> Parent = null;
 		while (!temp.isNull()) {
 			if (temp.getKey().compareTo(key) > 0) {
-<<<<<<< HEAD
-				if (!Parent.isNull()) {
-					return new entry(Parent);
-=======
 				if ((Parent!=null)&&(temp.getLeftChild().isNull())) {
-					return new entry(Parent.getKey(), Parent.getValue());
->>>>>>> branch 'master' of https://github.com/AhmedAbdallah142/RedBlackTree-Treemap.git
+					return new entry(Parent);
 				}
 				temp = temp.getLeftChild();
 			} else if (temp.getKey().compareTo(key) == 0) {
