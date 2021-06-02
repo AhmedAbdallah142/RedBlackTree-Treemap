@@ -420,10 +420,35 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		tree1.put(8, "Faxawy");
 		tree1.put(4, "Faxawy");
 		
+		
+		
+		// Ahmed Abdallah tests
 		System.out.println(tree.floorEntry(9));
 		System.out.println(tree1.floorEntry(9));
 		System.out.println(tree.floorEntry(2));
 		System.out.println(tree1.floorEntry(2));
+		System.out.println(tree.floorKey(0));
+		System.out.println(tree1.floorKey(0));
+		System.out.println(tree.floorKey(12));
+		System.out.println(tree1.floorKey(12));
+		System.out.println(tree.get(0));
+		System.out.println(tree1.get(0));
+		System.out.println(tree.get(8));
+		System.out.println(tree1.get(8));
+		System.out.println(tree.headMap(0));
+		System.out.println(tree1.headMap(0));
+		System.out.println(tree.headMap(8));
+		System.out.println(tree1.headMap(8));
+		System.out.println(tree.headMap(0,true));
+		System.out.println(tree1.headMap(0,true));
+		System.out.println(tree.headMap(8,true));
+		System.out.println(tree1.headMap(8,true));
+		System.out.println(tree.keySet());
+		System.out.println(tree1.keySet());
+		System.out.println(tree.lastEntry());
+		System.out.println(tree1.lastEntry());
+		System.out.println(tree.lastKey());
+		System.out.println(tree1.lastKey());
 	}
 
 }
