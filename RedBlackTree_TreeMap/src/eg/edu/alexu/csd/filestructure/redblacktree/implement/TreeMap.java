@@ -44,7 +44,13 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		}
 
 	};
-
+	Comparator<Entry<T, V>> keyComparator = new Comparator<Entry<T, V>>() {
+		@Override
+		public int compare(Entry<T, V> o1, Entry<T, V> o2) {
+			return o1.getKey().compareTo(o2.getKey());
+		}
+	};
+	Set<Entry<T, V>> Entryset = new TreeSet<Entry<T, V>>(keyComparator);
 	RedBlackTree<T, V> tree;
 	public TreeMap() {
 		tree = new RedBlackTree<>();
@@ -72,13 +78,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 		return low;
 	}*/
-	Comparator<Entry<T, V>> keyComparator = new Comparator<Entry<T, V>>() {
-		@Override
-		public int compare(Entry<T, V> o1, Entry<T, V> o2) {
-			return o1.getKey().compareTo(o2.getKey());
-		}
-	};
-	Set<Entry<T, V>> set = new TreeSet<Entry<T, V>>(keyComparator);
 	@Override
 	public Entry<T, V> ceilingEntry(T key) {
 		if (key==null)
@@ -120,6 +119,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	@Override
 	public void clear() {
 		tree = new RedBlackTree<T, V>();
+		Entryset = new TreeSet<Map.Entry<T,V>>(keyComparator);
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Set<Entry<T, V>> entrySet() {
-		return set;
+		return Entryset;
 	}
 
 	@Override
@@ -301,7 +301,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		}
 		Entry<T, V> temp = firstEntry();
 		if(temp != null) {
-			set.remove(temp); }
+			Entryset.remove(temp); }
 		tree.delete(temp.getKey());
 		return temp;
 	}
@@ -313,7 +313,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		}
 		Entry<T, V> temp = lastEntry();
 		if(temp != null) {
-			set.remove(temp); }
+			Entryset.remove(temp); }
 		tree.delete(temp.getKey());
 		return temp;
 	}
@@ -322,10 +322,10 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	public void put(T key, V value) {
 		if(containsKey(key)) {
 			V val = tree.search(key);
-			set.remove(new entry(key, val));
-			set.add(new entry(key, value));
+			Entryset.remove(new entry(key, val));
+			Entryset.add(new entry(key, value));
 		}else {
-			set.add(new entry(key, value));
+			Entryset.add(new entry(key, value));
 		}
 		tree.insert(key, value);
 	}
@@ -345,10 +345,10 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			V val = entry.getValue();
 			if(containsKey(key)) {
 				V value = tree.search(key);
-				set.remove(new entry(key, value));
-				set.add(new entry(key, val));
+				Entryset.remove(new entry(key, value));
+				Entryset.add(new entry(key, val));
 			}else {
-				set.add(new entry(key, val));
+				Entryset.add(new entry(key, val));
 			}
 			tree.insert(key,val);
 		}
@@ -370,7 +370,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			throw new RuntimeErrorException(null);
 		if(containsKey(key)) {
 			V val = tree.search(key);
-			set.remove(new entry(key, val));
+			Entryset.remove(new entry(key, val));
 		}
 		return tree.delete(key);
 	}

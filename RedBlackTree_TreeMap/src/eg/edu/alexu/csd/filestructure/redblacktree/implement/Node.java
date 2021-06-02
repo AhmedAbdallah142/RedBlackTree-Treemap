@@ -85,7 +85,7 @@ public class Node<T extends Comparable<T>, V> implements INode<T, V> {
 	public boolean isNull() {
 		return this.key == null ;
 	}
-
+	
 	@Override
 	public String toString() {
 		String color = (this.isRed) ? "red" : "black";
