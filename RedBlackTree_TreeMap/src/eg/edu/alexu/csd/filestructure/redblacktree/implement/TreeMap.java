@@ -56,7 +56,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			curr = s.pop();
 
 			if (curr.getKey().compareTo(key) >= 0) {
-				return ((Node<T, V>) curr).asEntry();
+				return new AbstractMap.SimpleEntry<T,V>(curr.getKey(), curr.getValue());
 			}
 			curr = curr.getRightChild();
 		}
@@ -134,7 +134,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		/* first recur on left child */
 		addSetInOrder(node.getLeftChild(), list);
 		if (node.getKey() != null) {
-			list.add(((Node<T, V>) node).asEntry());
+			list.add(new AbstractMap.SimpleEntry<T,V>(node.getKey(), node.getValue()));
 		}
 		addSetInOrder(node.getRightChild(), list);
 	}
@@ -167,7 +167,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 				root = root.getLeftChild();
 				child = child.getLeftChild();
 			}
-			return ((Node<T, V>) root).asEntry();
+			return new AbstractMap.SimpleEntry<T,V>(root.getKey(), root.getValue());
 		}
 	}
 
@@ -191,14 +191,14 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			while (!temp.isNull()) {
 				if (temp.getKey().compareTo(key) > 0) {
 					if ((Parent!=null)&&(temp.getLeftChild().isNull())) {
-						return ((Node<T, V>) Parent).asEntry();
+						return new AbstractMap.SimpleEntry<T,V>(Parent.getKey(), Parent.getValue());
 					}
 					temp = temp.getLeftChild();
 				} else if (temp.getKey().compareTo(key) == 0) {
-					return ((Node<T, V>) temp).asEntry();
+					return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
 				} else {
 					if (temp.getRightChild().isNull()) {
-						return ((Node<T, V>) temp).asEntry();
+						return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
 					}
 					Parent = temp;
 					temp = temp.getRightChild();
@@ -242,11 +242,11 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			return;
 		headMapHelper(toKey, inclusive, temp.getLeftChild(), nodes);
 		if (temp.getKey().compareTo(toKey) < 0) {
-			nodes.add(((Node<T, V>) temp).asEntry());
+			nodes.add(new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue()));
 			headMapHelper(toKey, inclusive, temp.getRightChild(), nodes);
 		} else if (temp.getKey().compareTo(toKey) == 0) {
 			if (inclusive)
-				nodes.add(((Node<T, V>) temp).asEntry());
+				nodes.add(new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue()));
 		}
 	}
 
@@ -272,7 +272,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		INode<T, V> temp = tree.getRoot();
 		while (!temp.isNull()) {
 			if (temp.getRightChild().isNull())
-				return ((Node<T, V>) temp).asEntry();
+				return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
 			temp = temp.getRightChild();
 		}
 		return null;
