@@ -1339,10 +1339,6 @@ public class UnitTest {
 				}
 			});
 			for (int i = 0; i < ans.size(); i++) {
-				String S1 = realAns.get(i).toString();
-				String S2 = ans.get(i).toString();
-				System.out.println(S1);
-				System.out.println(S2);
 				Assert.assertEquals(realAns.get(i), ans.get(i));
 			}	
 		} catch (Throwable e) {
@@ -1458,6 +1454,8 @@ public class UnitTest {
 				t.put(key, "soso" + key);
 				treemap.put(key, "soso" + key);
 			}
+			System.out.println(t.entrySet());
+			System.out.println(treemap.entrySet());
 			Assert.assertEquals(t.size(), treemap.size());
 			Assert.assertEquals(t.pollFirstEntry(), treemap.pollFirstEntry());
 			Assert.assertEquals(t.size(), treemap.size());
