@@ -375,6 +375,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public boolean remove(T key) {
+		if (key==null)
+			throw new RuntimeErrorException(null);
 		if (treeSize != 0) {
 			treeSize--;
 		}
