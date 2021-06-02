@@ -9,7 +9,7 @@ import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
-	class entry implements Entry<T, V> {
+	/*class entry implements Entry<T, V> {
 		T key;
 		V value;
 
@@ -43,7 +43,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			return key+"="+value;
 		}
 
-	};
+	};*/
 	Comparator<Entry<T, V>> keyComparator = new Comparator<Entry<T, V>>() {
 		@Override
 		public int compare(Entry<T, V> o1, Entry<T, V> o2) {
@@ -88,14 +88,14 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			while (!temp.isNull()) {
 				if (temp.getKey().compareTo(key) < 0) {
 					if ((Parent!=null)&&(temp.getRightChild().isNull())) {
-						return new entry(Parent);
+						return new AbstractMap.SimpleEntry<T,V>(Parent.getKey(), Parent.getValue());
 					}
 					temp = temp.getRightChild();
 					} else if (temp.getKey().compareTo(key) == 0) {
-						return new entry(temp);
+						return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
 					} else {
 						if (temp.getLeftChild().isNull()) {
-							return new entry(temp);
+							return new AbstractMap.SimpleEntry<T,V>(temp.getKey(), temp.getValue());
 						}
 						Parent = temp;
 						temp = temp.getLeftChild();
@@ -322,10 +322,10 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	public void put(T key, V value) {
 		if(containsKey(key)) {
 			V val = tree.search(key);
-			Entryset.remove(new entry(key, val));
-			Entryset.add(new entry(key, value));
+			Entryset.remove(new AbstractMap.SimpleEntry<T,V>(key, val));
+			Entryset.add(new AbstractMap.SimpleEntry<T,V>(key, value));
 		}else {
-			Entryset.add(new entry(key, value));
+			Entryset.add(new AbstractMap.SimpleEntry<T,V>(key, value));
 		}
 		tree.insert(key, value);
 	}
@@ -345,10 +345,10 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			V val = entry.getValue();
 			if(containsKey(key)) {
 				V value = tree.search(key);
-				Entryset.remove(new entry(key, value));
-				Entryset.add(new entry(key, val));
+				Entryset.remove(new AbstractMap.SimpleEntry<T,V>(key, value));
+				Entryset.add(new AbstractMap.SimpleEntry<T,V>(key, val));
 			}else {
-				Entryset.add(new entry(key, val));
+				Entryset.add(new AbstractMap.SimpleEntry<T,V>(key, val));
 			}
 			tree.insert(key,val);
 		}
@@ -370,7 +370,7 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			throw new RuntimeErrorException(null);
 		if(containsKey(key)) {
 			V val = tree.search(key);
-			Entryset.remove(new entry(key, val));
+			Entryset.remove(new AbstractMap.SimpleEntry<T,V>(key, val));
 		}
 		return tree.delete(key);
 	}
