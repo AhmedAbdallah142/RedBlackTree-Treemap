@@ -1,6 +1,5 @@
 package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 
-
 import javax.management.RuntimeErrorException;
 
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
@@ -34,7 +33,8 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public V search(T key) {
-		if(key == null) throw new RuntimeErrorException(null, "Error, null key");
+		if (key == null)
+			throw new RuntimeErrorException(null, "Error, null key");
 		if (isEmpty()) {
 			return null;
 		}
@@ -57,10 +57,12 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public void insert(T key, V value) {
-		if(key == null) throw new RuntimeErrorException(null, "Error, null key");
-		if(value == null) throw new RuntimeErrorException(null, "Error, null value");
+		if (key == null)
+			throw new RuntimeErrorException(null, "Error, null key");
+		if (value == null)
+			throw new RuntimeErrorException(null, "Error, null value");
 		/*** insert in suitable place like any BST ***/
-		
+
 		// if empty tree, easy
 		if (isEmpty()) {
 			root = new Node<T, V>(key, value, null);
@@ -140,9 +142,11 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 
 	@Override
 	public boolean delete(T key) {
-		if(key == null) throw new RuntimeErrorException(null, "Error, null key");
-		if(this.isEmpty()) throw new RuntimeErrorException(null, "Error, deleting from empty tree");
-		
+		if (key == null)
+			throw new RuntimeErrorException(null, "Error, null key");
+		if (this.isEmpty())
+			throw new RuntimeErrorException(null, "Error, deleting from empty tree");
+
 		boolean check = deletNode(root, key);
 		return check;
 	}
@@ -356,6 +360,5 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 		printTree(root.getLeftChild());
 		printTree(root.getRightChild());
 	}
-	
 
 }

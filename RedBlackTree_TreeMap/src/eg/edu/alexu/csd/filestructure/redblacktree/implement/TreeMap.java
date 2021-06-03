@@ -1,9 +1,17 @@
 package eg.edu.alexu.csd.filestructure.redblacktree.implement;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.Stack;
+import java.util.TreeSet;
 
 import javax.management.RuntimeErrorException;
+
 import eg.edu.alexu.csd.filestructure.redblacktree.INode;
 import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
@@ -213,15 +221,13 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public ArrayList<Entry<T, V>> headMap(T toKey) {
-		if (toKey == null)
-			throw new RuntimeErrorException(null);
-		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
-		headMapHelper(toKey, false, tree.getRoot(), Nodes);
-		return Nodes;
+		return headMap(toKey, false);
 	}
 
 	@Override
 	public ArrayList<Entry<T, V>> headMap(T toKey, boolean inclusive) {
+		if (toKey == null)
+			throw new RuntimeErrorException(null);
 		ArrayList<Entry<T, V>> Nodes = new ArrayList<>();
 		headMapHelper(toKey, inclusive, tree.getRoot(), Nodes);
 		return Nodes;
@@ -242,19 +248,17 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Set<T> keySet() {
-		/*Set<T> set = new TreeSet<T>();
-		keySetHelper(tree.getRoot(), set);
-		return set;*/
+		/*
+		 * Set<T> set = new TreeSet<T>(); keySetHelper(tree.getRoot(), set); return set;
+		 */
 		return keyset;
 	}
 
-	private void keySetHelper(INode<T, V> root, Set<T> set) {
-		if (root.isNull())
-			return;
-		set.add((T) root.getKey());
-		keySetHelper(root.getLeftChild(), set);
-		keySetHelper(root.getRightChild(), set);
-	}
+	/*
+	 * private void keySetHelper(INode<T, V> root, Set<T> set) { if (root.isNull())
+	 * return; set.add((T) root.getKey()); keySetHelper(root.getLeftChild(), set);
+	 * keySetHelper(root.getRightChild(), set); }
+	 */
 
 	@Override
 	public Entry<T, V> lastEntry() {
