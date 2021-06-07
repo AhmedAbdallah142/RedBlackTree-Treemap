@@ -17,23 +17,6 @@ import eg.edu.alexu.csd.filestructure.redblacktree.ITreeMap;
 
 public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
-	/*
-	 * class entry implements Entry<T, V> { T key; V value;
-	 * 
-	 * entry(INode<T,V> node) { this.key = node.getKey(); this.value =
-	 * node.getValue(); } entry(T key,V value) { this.key = key; this.value = value;
-	 * }
-	 * 
-	 * @Override public T getKey() { return key; }
-	 * 
-	 * @Override public V getValue() { return value; }
-	 * 
-	 * @Override public V setValue(V value) { this.value = value; return value; }
-	 * 
-	 * @Override public String toString() { return key+"="+value; }
-	 * 
-	 * };
-	 */
 	Comparator<Entry<T, V>> keyComparator = new Comparator<Entry<T, V>>() {
 		@Override
 		public int compare(Entry<T, V> o1, Entry<T, V> o2) {
@@ -50,20 +33,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		keyset = new TreeSet<T>();
 	}
 
-	/*
-	 * ArrayList<INode<T, V>> treeNodes = new ArrayList<INode<T, V>>();
-	 * 
-	 * int lower_bound(T key) { int mid; int low = 0; int high = treeNodes.size();
-	 * while (low < high) { mid = low + (high - low) / 2;
-	 * 
-	 * if (key.compareTo(treeNodes.get(mid).getKey()) <= 0) { high = mid; } else {
-	 * low = mid + 1; } }
-	 * 
-	 * if (low < treeNodes.size() && (treeNodes.get(low).getKey().compareTo(key) <
-	 * 0)) { low++; }
-	 * 
-	 * return low; }
-	 */
 	@Override
 	public Entry<T, V> ceilingEntry(T key) {
 		if (key == null)
@@ -248,17 +217,8 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 
 	@Override
 	public Set<T> keySet() {
-		/*
-		 * Set<T> set = new TreeSet<T>(); keySetHelper(tree.getRoot(), set); return set;
-		 */
 		return keyset;
 	}
-
-	/*
-	 * private void keySetHelper(INode<T, V> root, Set<T> set) { if (root.isNull())
-	 * return; set.add((T) root.getKey()); keySetHelper(root.getLeftChild(), set);
-	 * keySetHelper(root.getRightChild(), set); }
-	 */
 
 	@Override
 	public Entry<T, V> lastEntry() {
@@ -327,11 +287,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 		if (map == null)
 			throw new RuntimeErrorException(null);
 		tree = new RedBlackTree<T, V>();
-		/*
-		 * T [] key = (T[]) map.keySet().toArray(); V [] val = (V[])
-		 * map.values().toArray(); for (int i=0 ; i< map.size() ; i++){
-		 * tree.insert(key[i] , val[i]); }
-		 */
 		for (Map.Entry<T, V> entry : map.entrySet()) {
 			T key = entry.getKey();
 			V val = entry.getValue();
@@ -346,12 +301,6 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 			tree.insert(key, val);
 		}
 	}
-
-	/*
-	 * public void inOrder(INode<T, V> node, Map<T, V> map) { if (node.isNull()) {
-	 * return; } inOrder(node.getLeftChild(), map); map.put(node.getKey(),
-	 * node.getValue()); inOrder(node.getRightChild(), map); } }
-	 */
 
 	@Override
 	public boolean remove(T key) {
@@ -390,95 +339,4 @@ public class TreeMap<T extends Comparable<T>, V> implements ITreeMap<T, V> {
 	public String toString() {
 		return "TreeMap [tree=" + tree + "]";
 	}
-
-	public static void main(String[] args) {
-		TreeMap<Integer, String> tree = new TreeMap<Integer, String>();
-		tree.lastEntry();
-		tree.put(1, "Mark1");
-		tree.put(2, "Faxawy2");
-		tree.put(3, "Mark3");
-		tree.put(5, "Mark5");
-		tree.put(6, "Faxawy6");
-		tree.put(7, "Mark");
-		tree.put(8, "Faxawy8");
-		tree.put(8, "Fax");
-		tree.remove(5);
-		tree.put(4, "Faxawy4");
-		// tree.put(10, "fax");
-
-		java.util.TreeMap<Integer, String> tree1 = new java.util.TreeMap<Integer, String>();
-
-		tree1.put(1, "Mark");
-		tree1.put(2, "Faxawy");
-		tree1.put(3, "Mark");
-		tree1.put(5, "Mark");
-		tree1.put(6, "Faxawy");
-		tree1.put(7, "Mark");
-		tree1.put(8, "Faxawy");
-		tree1.put(8, "Fax");
-		tree1.remove(5);
-		tree1.put(4, "Faxawy");
-		// tree1.put(10, "fax");
-
-		// Ahmed Ashraf tests
-		/*
-		 * System.out.println(tree.ceilingEntry(3));
-		 * System.out.println(tree1.ceilingEntry(3));
-		 * System.out.println(tree.ceilingEntry(4));
-		 * System.out.println(tree1.ceilingEntry(4));
-		 * System.out.println(tree.ceilingKey(3));
-		 * System.out.println(tree1.ceilingKey(3));
-		 * System.out.println(tree.ceilingKey(0));
-		 * System.out.println(tree1.ceilingKey(0));
-		 * System.out.println(tree.containsKey(3));
-		 * System.out.println(tree1.containsKey(3));
-		 * System.out.println(tree.containsKey(13));
-		 * System.out.println(tree1.containsKey(13));
-		 * /*System.out.println(tree.containsValue("Mark"));
-		 * System.out.println(tree1.containsValue("Mark"));
-		 * System.out.println(tree.containsValue("zoo"));
-		 * System.out.println(tree1.containsValue("zoo"));
-		 * System.out.println(tree.entrySet()); System.out.println(tree1.entrySet());
-		 * /*System.out.println(tree.firstEntry());
-		 * System.out.println(tree1.firstEntry()); System.out.println(tree.firstKey());
-		 * System.out.println(tree1.firstKey()); //tree.clear(); //tree1.clear();
-		 * System.out.println(tree.size()); System.out.println(tree1.size());
-		 * 
-		 * 
-		 * // Ahmed Abdallah tests System.out.println(tree.floorEntry(9));
-		 * System.out.println(tree1.floorEntry(9));
-		 * System.out.println(tree.floorEntry(2));
-		 * System.out.println(tree1.floorEntry(2));
-		 * System.out.println(tree.floorKey(0)); System.out.println(tree1.floorKey(0));
-		 * System.out.println(tree.floorKey(12));
-		 * System.out.println(tree1.floorKey(12)); System.out.println(tree.get(0));
-		 * System.out.println(tree1.get(0)); System.out.println(tree.get(8));
-		 * System.out.println(tree1.get(8)); System.out.println(tree.headMap(0));
-		 * System.out.println(tree1.headMap(0)); System.out.println(tree.headMap(8));
-		 * System.out.println(tree1.headMap(8));
-		 * System.out.println(tree.headMap(0,true));
-		 * System.out.println(tree1.headMap(0,true));
-		 * System.out.println(tree.headMap(8,true));
-		 * System.out.println(tree1.headMap(8,true)); System.out.println(tree.keySet());
-		 * System.out.println(tree1.keySet()); System.out.println(tree.lastEntry());
-		 * System.out.println(tree1.lastEntry()); System.out.println(tree.lastKey());
-		 * System.out.println(tree1.lastKey());
-		 */
-		// Mark Test
-		/*
-		 * //17 System.out.println(tree1.pollFirstEntry());
-		 * System.out.println(tree.pollFirstEntry()); //18
-		 * System.out.println(tree1.pollLastEntry());
-		 * System.out.println(tree.pollLastEntry()); //19 in main //20 /*Map<Integer,
-		 * String> map = new HashMap<>(); map.put(1,"mark100"); map.put(5,"mark500");
-		 * map.put(2,"mark200"); map.put(6,"mark600"); tree.putAll(map);
-		 * System.out.println(tree.entrySet()); //21 System.out.println(tree.remove(1));
-		 * System.out.println(tree1.remove(1)); System.out.println(tree.entrySet());
-		 * System.out.println(tree1.entrySet()); //22 System.out.println(tree.size());
-		 * System.out.println(tree1.size()); //23 System.out.println(tree.values());
-		 * System.out.println(tree1.values());
-		 */
-
-	}
-
 }
