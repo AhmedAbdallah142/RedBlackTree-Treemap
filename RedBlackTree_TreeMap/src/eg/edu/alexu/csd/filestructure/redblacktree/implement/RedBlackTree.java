@@ -342,21 +342,4 @@ public class RedBlackTree<T extends Comparable<T>, V> implements IRedBlackTree<T
 		x.setParent(y);
 	}
 
-	public static void main(String[] args) {
-		RedBlackTree<Integer, Integer> t = new RedBlackTree<Integer, Integer>();
-		t.insert(8, -1);
-		t.delete(8);
-		t.insert(8, -1);
-		t.printTree(t.root);
-	}
-
-	// DFS left
-	private void printTree(INode<T, V> root) {
-		if (root == nill)
-			return;
-		System.out.println(root.toString());
-		printTree(root.getLeftChild());
-		printTree(root.getRightChild());
-	}
-
 }
